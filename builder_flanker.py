@@ -35,7 +35,8 @@ instructions = "Press the key that matches the arrow in the CENTER -- try to ign
                 \n Press the SPACEBAR to start the test."
 
 dateStr = time.strftime("%b_%d_%H%M", time.localtime())
-expInfo = {'participant': '', 'session': 1}
+# GROUP A = FEEDBACK COND    GROUP B = NO FEEDBACK COND
+expInfo = {'participant': '', 'group': ''}
 dlg = gui.DlgFromDict(dictionary=expInfo, title = expName)
 if dlg.OK:
     #save params to file for next time
@@ -47,6 +48,8 @@ else:
 expInfo['date'] = dateStr
 expInfo['expName'] = expName
 
+print(expInfo['group'])
+
 fileName = expInfo['participant'] + dateStr
 globalClock = core.Clock()
 logging.setDefaultClock(globalClock)
@@ -56,7 +59,7 @@ logFileName = 'MyTestFlanker-%s-%s' % (expInfo['participant'], dateStr)
 logging.LogFile((logFileName + '.log'), level=logging.INFO)
 logging.log(level=logging.INFO, msg='---START PARAMS---')
 logging.log(level=logging.INFO, msg='participant: %s' % expInfo['participant'])
-logging.log(level=logging.INFO, msg='session: %s' % expInfo['session'])
+logging.log(level=logging.INFO, msg='group: %s' % expInfo['group'])
 logging.log(level=logging.INFO, msg='date: %s' % dateStr)
 logging.log(level=logging.INFO, msg='respKeys: %s' % respKeys)
 
@@ -253,8 +256,8 @@ for thisBlock in blocks:
     block_RT_list = []
     corr_list = []
 
-    block_RT_list.clear()
-    corr_list.clear()
+    # block_RT_list.clear()
+    # corr_list.clear()
 
     if thisBlock != None:
         for paramName in thisBlock:
@@ -307,33 +310,35 @@ for thisBlock in blocks:
         
 
         while continueTrial:
-            # print('continuing')
             t = trialClock.getTime()
-            # print(f'thisComp status: {thisComp.status}')
-            # print(f't = {t}')
-            # print(t)
+            
             frameN = frameN + 1 
-            # print(f'frame = {frameN}')
-            # print(frameN)
-
-            if t >= 0.5:
+            
+            # RETURN TO 0.5
+            if t >= 0:
                 fixationText.setAutoDraw(True)
-            if t >= 3.0:
+
+            # RETURN TO 3.0
+            if t >= 1:
                 fixationText.setAutoDraw(False)
                 win.flip()
-            if t >= 3.0:
+
+            # RETURN TO 3.0
+            if t >= 1:
                 # doing a for loop to set autodraw true to ALL flanks
                 for flanker in flanker_stimuli:
                     # win.timeOnFlip(flanker, 'tStartRefresh')
                     flanker.setAutoDraw(True)
 
-            if t >= 4.0 and target_arrow.status == NOT_STARTED:
+            # RETURN TO 4.0
+            if t >= 1.5 and target_arrow.status == NOT_STARTED:
                 target_arrow.tStart = t
                 target_arrow.frameNStart = frameN
                 win.timeOnFlip(target_arrow, 'tStartRefresh')
                 target_arrow.setAutoDraw(True)
 
-            if t >= 4.0 and resp.status == NOT_STARTED:
+            # RETURN TO 4.0
+            if t >= 1.5 and resp.status == NOT_STARTED:
                 resp.tStart = t 
                 resp.frameNStart = frameN
                 win.timeOnFlip(resp, 'tStartRefresh')
@@ -341,13 +346,15 @@ for thisBlock in blocks:
                 win.callOnFlip(resp.clock.reset)
                 resp.clearEvents(eventType='keyboard')
 
-            if t >= 7.0:
+            # RETURN TO 7.0
+            if t >= 3.0:
                 target_arrow.setAutoDraw(False)
                 for flanker in flanker_stimuli:
                     flanker.setAutoDraw(False)
                 tooSlowStim.setAutoDraw(True)
 
-            if t >= 8.5:
+            # RETURN TO 8.5
+            if t >= 3.5:
                 tooSlowStim.setAutoDraw(False)
                 continueTrial = False
 
@@ -409,224 +416,265 @@ for thisBlock in blocks:
             # print(f"kb RT: {kb.rt}")
         thisExp.nextEntry()
 
-    if blocks.thisTrialN == 2:
-        # if this is the end of the 2nd block...
-        break
-    elif blocks.thisTrialN == 0:
-        # Prepare to start "Feedback" routine
-        fb = keyboard.Keyboard()
-        fb.clearEvents()
-        # event.clearEvents()
-        frameN = -1
-        t = 0
-        waiting = True
-        feedbackClock.reset()
-        feedbackComps = [feedbackText, fb]
-        for thisFbComp in feedbackComps:
-            thisFbComp.tStart = None
-            thisFbComp.tStop = None 
-            thisFbComp.tStartRefresh = None 
-            thisFbComp.tStopRefresh = None 
-            if hasattr(thisFbComp, 'status'):
-                thisFbComp.status = NOT_STARTED
-
-        rt_array = np.array(block_RT_list)
-        corr_array = np.array(corr_list)
-        fc_mean_rt = rt_array.mean()
-        corr_sum = corr_array.sum()
-
-        txt = 'Good Job!\n\n'
-        txt += ('You got {} correct out of 12\n\n'.format(corr_sum))
-        txt += ('Your average reaction time was {0:.2f} seconds\n\n'.format(fc_mean_rt))
-        txt += 'Try to be as quick and accurate as possible\n\n'
-        txt += 'Get ready for the next round!\n\n\n'
-        txt += 'Press ENTER when ready'
-
-
-        while waiting:
-            # print('waiting top true')
+    print(expInfo['group'])
+    if expInfo.get('group') == 'A':
+        print('launching A feedback')
+        # print(expInfo.get('group') == 'B')
+        if blocks.thisTrialN == 0:
+            # Prepare to start "Feedback" routine
+            fb = keyboard.Keyboard()
             fb.clearEvents()
-            t = feedbackClock.getTime()
-            frameN = frameN + 1
-            # print(f'feedback status: {feedbackText.status}')
-            if t >= 0.5 and feedbackText.status == NOT_STARTED:
-                feedbackText.tStart = t
-                feedbackText.frameNStart = frameN
-                win.timeOnFlip(feedbackText, 'tStartRefresh')
-                feedbackText.setText(txt)
-                feedbackText.setAutoDraw(True)
-
-            # print(block_RT_list)
-            if t >= 1.5 and fb.status == NOT_STARTED:
-                fb.tStart = t
-                fb.frameNStart = frameN
-                win.timeOnFlip(fb, 'tStartRefresh')
-                fb.status = STARTED
-                fb.clearEvents(eventType='keyboard')
-
-            # print(f'fb status: {fb.status}')
-            if fb.status == STARTED:
-                theseKeys = fb.getKeys(keyList=["return"], waitRelease=False)
-                if len(theseKeys):
-                    theseKeys = theseKeys[0]
-                    print(f'key pressed: {theseKeys}')    
-
-                    if "escape" == theseKeys:
-                        endExpNow = True
-                    waiting = False 
-                    print('waiting keyboard false')
-
-            if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
-                core.quit
-
-            if not waiting:
-                print('waiting false. break')
-                break
-
-            waiting = False
-            # print('waiting false. after if not waiting')
-
-            # print(f'fb status before fbComp: {fb.status}')
+            # event.clearEvents()
+            frameN = -1
+            t = 0
+            waiting = True
+            feedbackClock.reset()
+            feedbackComps = [feedbackText, fb]
             for thisFbComp in feedbackComps:
-                # print(f'comp status: {thisFbComp.status}')
+                thisFbComp.tStart = None
+                thisFbComp.tStop = None 
+                thisFbComp.tStartRefresh = None 
+                thisFbComp.tStopRefresh = None 
+                if hasattr(thisFbComp, 'status'):
+                    thisFbComp.status = NOT_STARTED
 
-                if hasattr(thisFbComp, "status") and thisFbComp.status != FINISHED:
-                    waiting = True
-                    # print('waiting true. this comp')
+            rt_array = np.array(block_RT_list)
+            corr_array = np.array(corr_list)
+            fc_mean_rt = rt_array.mean()
+            corr_sum = corr_array.sum()
+
+            txt = 'Good Job!\n\n'
+            txt += ('You got {} correct out of 12\n\n'.format(corr_sum))
+            txt += ('Your average reaction time was {0:.2f} seconds\n\n'.format(fc_mean_rt))
+            txt += 'Try to be as quick and accurate as possible\n\n'
+            txt += 'Get ready for the next round!\n\n\n'
+            txt += 'Press ENTER when ready'
+
+
+            while waiting:
+                # print('waiting top true')
+                fb.clearEvents()
+                t = feedbackClock.getTime()
+                frameN = frameN + 1
+                # print(f'feedback status: {feedbackText.status}')
+                if t >= 0.5 and feedbackText.status == NOT_STARTED:
+                    feedbackText.tStart = t
+                    feedbackText.frameNStart = frameN
+                    win.timeOnFlip(feedbackText, 'tStartRefresh')
+                    feedbackText.setText(txt)
+                    feedbackText.setAutoDraw(True)
+
+                # print(block_RT_list)
+                if t >= 1.5 and fb.status == NOT_STARTED:
+                    fb.tStart = t
+                    fb.frameNStart = frameN
+                    win.timeOnFlip(fb, 'tStartRefresh')
+                    fb.status = STARTED
+                    fb.clearEvents(eventType='keyboard')
+
+                # print(f'fb status: {fb.status}')
+                if fb.status == STARTED:
+                    theseKeys = fb.getKeys(keyList=["return"], waitRelease=False)
+                    if len(theseKeys):
+                        theseKeys = theseKeys[0]
+                        print(f'key pressed: {theseKeys}')    
+
+                        if "escape" == theseKeys:
+                            endExpNow = True
+                        waiting = False 
+                        print('waiting keyboard false')
+
+                if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+                    core.quit
+
+                if not waiting:
+                    print('waiting false. break')
                     break
 
-            if waiting:
-                win.flip()
-                # print('waiting, flip')
+                waiting = False
+                # print('waiting false. after if not waiting')
 
-        for thisFbComp in feedbackComps:
-            if hasattr(thisFbComp, "setAutoDraw"):
-                thisFbComp.setAutoDraw(False)
+                # print(f'fb status before fbComp: {fb.status}')
+                for thisFbComp in feedbackComps:
+                    # print(f'comp status: {thisFbComp.status}')
 
-    elif blocks.thisTrialN == 1:
-        lfb = keyboard.Keyboard()
-        lfb.clearEvents()
-        # event.clearEvents()
-        frameN = -1
-        t = 0
-        waiting = True
-        lastFeedbackClock.reset()
-        lastFeedbackComps = [lastRoundFeedbackText, lfb]
-        for thisComp in lastFeedbackComps:
-            thisComp.tStart = None
-            thisComp.tStop = None 
-            thisComp.tStartRefresh = None 
-            thisComp.tStopRefresh = None 
-            if hasattr(thisComp, 'status'):
-                thisComp.status = NOT_STARTED
+                    if hasattr(thisFbComp, "status") and thisFbComp.status != FINISHED:
+                        waiting = True
+                        # print('waiting true. this comp')
+                        break
 
-        rt_array = np.array(block_RT_list)
-        corr_array = np.array(corr_list)
-        fc_mean_rt = rt_array.mean()
-        corr_sum = corr_array.sum()
+                if waiting:
+                    win.flip()
+                    # print('waiting, flip')
 
-        txt = 'Good Job!\n\n'
-        txt += ('You got {} correct out of 12\n\n'.format(corr_sum))
-        txt += ('Your average reaction time was {0:.2f} seconds\n\n'.format(fc_mean_rt))
-        txt += 'Get ready for the final round!!!\n\n\n'
-        txt += 'Press ENTER when ready'
+            for thisFbComp in feedbackComps:
+                if hasattr(thisFbComp, "setAutoDraw"):
+                    thisFbComp.setAutoDraw(False)
 
-
-
-        while waiting:
-            # print('waiting top true')
+        elif blocks.thisTrialN == 1:
+            lfb = keyboard.Keyboard()
             lfb.clearEvents()
-            t = lastFeedbackClock.getTime()
-            frameN = frameN + 1
-            # print(f'feedback status: {feedbackText.status}')
-            if t >= 0.5 and lastRoundFeedbackText.status == NOT_STARTED:
-                lastRoundFeedbackText.tStart = t
-                lastRoundFeedbackText.frameNStart = frameN
-                win.timeOnFlip(lastRoundFeedbackText, 'tStartRefresh')
-                lastRoundFeedbackText.setText(txt)
-                lastRoundFeedbackText.setAutoDraw(True)
-
-            # print(block_RT_list)
-            if t >= 1.5 and lfb.status == NOT_STARTED:
-                lfb.tStart = t
-                lfb.frameNStart = frameN
-                win.timeOnFlip(lfb, 'tStartRefresh')
-                lfb.status = STARTED
-                lfb.clearEvents(eventType='keyboard')
-
-            # print(f'fb status: {fb.status}')
-            if lfb.status == STARTED:
-                theseKeys = lfb.getKeys(keyList=["return"], waitRelease=False)
-                if len(theseKeys):
-                    theseKeys = theseKeys[0]
-                    # print(f'key pressed: {theseKeys}')    
-
-                    if "escape" == theseKeys:
-                        endExpNow = True
-                    waiting = False 
-                    # print('waiting keyboard false')
-
-            if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
-                core.quit
-
-            if not waiting:
-                # print('waiting false. break')
-                break
-
-            waiting = False
-            # print('waiting false. after if not waiting')
-
-            # print(f'fb status before fbComp: {fb.status}')
+            # event.clearEvents()
+            frameN = -1
+            t = 0
+            waiting = True
+            lastFeedbackClock.reset()
+            lastFeedbackComps = [lastRoundFeedbackText, lfb]
             for thisComp in lastFeedbackComps:
-                if hasattr(thisComp, "status") and thisComp.status != FINISHED:
-                    waiting = True
+                thisComp.tStart = None
+                thisComp.tStop = None 
+                thisComp.tStartRefresh = None 
+                thisComp.tStopRefresh = None 
+                if hasattr(thisComp, 'status'):
+                    thisComp.status = NOT_STARTED
+
+            rt_array = np.array(block_RT_list)
+            corr_array = np.array(corr_list)
+            fc_mean_rt = rt_array.mean()
+            corr_sum = corr_array.sum()
+
+            txt = 'Good Job!\n\n'
+            txt += ('You got {} correct out of 12\n\n'.format(corr_sum))
+            txt += ('Your average reaction time was {0:.2f} seconds\n\n'.format(fc_mean_rt))
+            txt += 'Get ready for the final round!!!\n\n\n'
+            txt += 'Press ENTER when ready'
+
+
+
+            while waiting:
+                # print('waiting top true')
+                lfb.clearEvents()
+                t = lastFeedbackClock.getTime()
+                frameN = frameN + 1
+                # print(f'feedback status: {feedbackText.status}')
+                if t >= 0.5 and lastRoundFeedbackText.status == NOT_STARTED:
+                    lastRoundFeedbackText.tStart = t
+                    lastRoundFeedbackText.frameNStart = frameN
+                    win.timeOnFlip(lastRoundFeedbackText, 'tStartRefresh')
+                    lastRoundFeedbackText.setText(txt)
+                    lastRoundFeedbackText.setAutoDraw(True)
+
+                # print(block_RT_list)
+                if t >= 1.5 and lfb.status == NOT_STARTED:
+                    lfb.tStart = t
+                    lfb.frameNStart = frameN
+                    win.timeOnFlip(lfb, 'tStartRefresh')
+                    lfb.status = STARTED
+                    lfb.clearEvents(eventType='keyboard')
+
+                # print(f'fb status: {fb.status}')
+                if lfb.status == STARTED:
+                    theseKeys = lfb.getKeys(keyList=["return"], waitRelease=False)
+                    if len(theseKeys):
+                        theseKeys = theseKeys[0]
+                        # print(f'key pressed: {theseKeys}')    
+
+                        if "escape" == theseKeys:
+                            endExpNow = True
+                        waiting = False 
+                        # print('waiting keyboard false')
+
+                if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+                    core.quit
+
+                if not waiting:
+                    # print('waiting false. break')
                     break
 
-            if waiting:
+                waiting = False
+                # print('waiting false. after if not waiting')
+
+                # print(f'fb status before fbComp: {fb.status}')
+                for thisComp in lastFeedbackComps:
+                    if hasattr(thisComp, "status") and thisComp.status != FINISHED:
+                        waiting = True
+                        break
+
+                if waiting:
+                    win.flip()
+
+            for thisComp in lastFeedbackComps:
+                if hasattr(thisComp, "setAutoDraw"):
+                    thisComp.setAutoDraw(False)
+
+        elif blocks.thisTrialN == 2:
+            # if this is the end of the 2nd block...
+            break
+            # pauseTimer.reset()
+
+            # # Prepare to start "Pause" routine
+            # t = 0
+            # pauseClock.reset()
+            # frameN = -1
+            # continueTrial = True
+            # # will update with 30 secs later
+            # pauseTimer.add(5.0)
+
+            # pauseComps = [pauseText]
+            # for thisComp in pauseComps:
+            #     thisComp.tStart = None
+            #     thisComp.tStop = None 
+            #     thisComp.tStartRefresh = None 
+            #     thisComp.tStopRefresh = None 
+            #     if hasattr(thisComp, 'status'):
+            #         thisComp.status = NOT_STARTED
+
+            # while pauseTimer.getTime() > 0:
+            #     t = pauseClock.getTime()
+            #     frameN = frameN + 1
+
+            #     if t >= 0.0: 
+            #         pauseText.draw()
+            #         win.logOnFlip(level=logging.EXP, msg='Display pause time')
+
+            #     if endExpNow or defaultKeyboard.getKeys(keyList=['escape']):
+            #         core.quit
+
+            #     win.flip()
+
+    elif expInfo.get('group') == 'B':
+        print('running B no feedback')
+        if blocks.thisTrialN == 2:
+            break
+
+        else:
+            pauseTimer.reset()
+
+            # Prepare to start "Pause" routine
+            t = 0
+            pauseClock.reset()
+            frameN = -1
+            continueTrial = True
+            # will update with 30 secs later
+            pauseTimer.add(5.0)
+
+            pauseComps = [pauseText]
+            for thisComp in pauseComps:
+                thisComp.tStart = None
+                thisComp.tStop = None 
+                thisComp.tStartRefresh = None 
+                thisComp.tStopRefresh = None 
+                if hasattr(thisComp, 'status'):
+                    thisComp.status = NOT_STARTED
+
+            while pauseTimer.getTime() > 0:
+                t = pauseClock.getTime()
+                frameN = frameN + 1
+
+                if t >= 0.0: 
+                    pauseText.draw()
+                    win.logOnFlip(level=logging.EXP, msg='Display pause time')
+
+                if endExpNow or defaultKeyboard.getKeys(keyList=['escape']):
+                    core.quit
+
                 win.flip()
-
-        for thisComp in lastFeedbackComps:
-            if hasattr(thisComp, "setAutoDraw"):
-                thisComp.setAutoDraw(False)
-
-        # pauseTimer.reset()
-
-        # # Prepare to start "Pause" routine
-        # t = 0
-        # pauseClock.reset()
-        # frameN = -1
-        # continueTrial = True
-        # # will update with 30 secs later
-        # pauseTimer.add(5.0)
-
-        # pauseComps = [pauseText]
-        # for thisComp in pauseComps:
-        #     thisComp.tStart = None
-        #     thisComp.tStop = None 
-        #     thisComp.tStartRefresh = None 
-        #     thisComp.tStopRefresh = None 
-        #     if hasattr(thisComp, 'status'):
-        #         thisComp.status = NOT_STARTED
-
-        # while pauseTimer.getTime() > 0:
-        #     t = pauseClock.getTime()
-        #     frameN = frameN + 1
-
-        #     if t >= 0.0: 
-        #         pauseText.draw()
-        #         win.logOnFlip(level=logging.EXP, msg='Display pause time')
-
-        #     if endExpNow or defaultKeyboard.getKeys(keyList=['escape']):
-        #         core.quit
-
-        #     win.flip()
-
-
     # get stimulus params names
     if trials.trialList in ([], [None], None):
         params = []
     else:
         params = trials.trialList[0].keys()
+
 
 win.flip()
 # save data for this loop
