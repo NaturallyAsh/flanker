@@ -228,6 +228,8 @@ while continueTrial:
                 endExpNow = True
             # print('not continuing')
             continueTrial = False
+    # clear events or it will register keys have already been pressed
+    defaultKeyboard.clearEvents()
     if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
         print('core start trial quit')
         core.quit()
