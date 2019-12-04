@@ -3,11 +3,17 @@
 # CREATE A COMMENTED SUMMARY OVERVIEW (significations of groups
 # variable meanings, block meanings, etc.)
 
+# create 2 dlg boxes: 1st one for the group letter and a subject
+# id number, both of which i input
+# myself; the 2nd with just age and gender
+
 # group A = no feedback
 # group B = 'good job' feedback only on corr resp
 # group C = 'good job' feedback regardless of performance
 
 # using block_params file containing block1, block2, and block3_params xlsx
+
+# remove PARTICIPANT field from dlg
 
 import psychopy 
 from psychopy.hardware import keyboard
@@ -35,11 +41,21 @@ instructions = "Press the key that matches the arrow in the CENTER -- try to ign
                 \n Press the SPACEBAR to start the test."
 
 dateStr = time.strftime("%b_%d_%H%M", time.localtime())
-expInfo = {'participant': '', 'age': '', 'gender': '', 'group': ''}
+fixedExpInfo = {'Subject ID': '','group': ''}
+fixedDlg = gui.DlgFromDict(
+    dictionary=fixedExpInfo,
+    title = expName,
+    order = ['Subject ID', 'group']
+    )
+if fixedDlg.OK:
+    print('ok')
+else:
+    core.quit()
+expInfo = {'age': '', 'gender': ''}
 dlg = gui.DlgFromDict(
     dictionary=expInfo, 
     title = expName,
-    order = ['participant', 'age', 'gender', 'group'])
+    order = ['age', 'gender'])
 if dlg.OK:
     #save params to file for next time
     #toFile('lastParams.pickle', expInfo)
@@ -50,18 +66,21 @@ else:
 expInfo['date'] = dateStr
 expInfo['expName'] = expName
 
-print(expInfo['group'])
+fixedExpInfo.update(expInfo)
 
-fileName = expInfo['participant'] + dateStr
+print(fixedExpInfo['group'])
+
+# fileName = expInfo['participant'] + dateStr
+fileName = dateStr
 globalClock = core.Clock()
 logging.setDefaultClock(globalClock)
 
 # --------------- LOGGING FILE --------------- #
-logFileName = 'MyFlanker-%s-%s' % (expInfo['participant'], dateStr)
+logFileName = 'MyFlanker-%s-%s' % (expInfo['date'], dateStr)
 logging.LogFile((logFileName + '.log'), level=logging.INFO)
 logging.log(level=logging.INFO, msg='---START PARAMS---')
-logging.log(level=logging.INFO, msg='participant: %s' % expInfo['participant'])
-logging.log(level=logging.INFO, msg='group: %s' % expInfo['group'])
+logging.log(level=logging.INFO, msg='date: %s' % expInfo['date'])
+logging.log(level=logging.INFO, msg='group: %s' % fixedExpInfo['group'])
 logging.log(level=logging.INFO, msg='date: %s' % dateStr)
 logging.log(level=logging.INFO, msg='respKeys: %s' % respKeys)
 
@@ -72,7 +91,7 @@ endExpNow = False #flag for 'escape' from exp
 # Handles exp data as a whole. 
 thisExp = data.ExperimentHandler(
         name=expName,
-        extraInfo=expInfo,
+        extraInfo=fixedExpInfo,
         savePickle=True,
         saveWideText=True,
         dataFileName=fileName)
@@ -255,7 +274,7 @@ for thisComp in instructComps:
 blocks = data.TrialHandler(
     nReps=1,
     method='random',
-    extraInfo=expInfo,
+    extraInfo=fixedExpInfo,
     originPath=1,
     trialList=data.importConditions('block_params.xlsx'),
     seed=None,
@@ -286,7 +305,7 @@ for thisBlock in blocks:
     # --------------- ADDING TRIALS TO BLOCK LOOP --------------- #
     trials = data.TrialHandler(nReps=1,
             method='random',
-            extraInfo=expInfo,
+            extraInfo=fixedExpInfo,
             originPath=-1,
             trialList=data.importConditions(condsFile),
             seed=None,
@@ -317,7 +336,7 @@ for thisBlock in blocks:
 
     # --------------- LAUNCHING GROUP A: NO FB ---------------- #
 
-    if expInfo['group'] == 'A':
+    if fixedExpInfo['group'] == 'A':
         print('launching group A')
 
         for thisTrial in trials:
@@ -483,7 +502,7 @@ for thisBlock in blocks:
 
     # --------------- LAUNCHING GROUP B: FB ON CORR RESP ---------------- #
 
-    if expInfo['group'] == 'B':
+    if fixedExpInfo['group'] == 'B':
         print('launching group B')
 
         for thisTrial in trials:
@@ -690,7 +709,7 @@ for thisBlock in blocks:
 
     # --------------- LAUNCHING GROUP C: FB EVERY TIME ---------------- #
 
-    if expInfo['group'] == 'C':
+    if fixedExpInfo['group'] == 'C':
         print('launching group C')
 
         for thisTrial in trials:
