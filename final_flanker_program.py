@@ -1,4 +1,4 @@
-# Current flanker build as of 11/25/19
+# Current flanker build as of 2/6/20
 
 # CREATE A COMMENTED SUMMARY OVERVIEW (significations of groups
 # variable meanings, block meanings, etc.)
@@ -71,7 +71,7 @@ fixedExpInfo.update(expInfo)
 print(fixedExpInfo['group'])
 
 # fileName = expInfo['participant'] + dateStr
-fileName = dateStr
+fileName = fixedExpInfo['group'] +' SubID-' + fixedExpInfo['Subject ID'] + '-' + dateStr
 globalClock = core.Clock()
 logging.setDefaultClock(globalClock)
 
@@ -108,6 +108,7 @@ win = visual.Window(
     monitor=mon,
     size=(widthPix, heightPix),
     colorSpace='rgb',
+    color = '#000000',
     allowGUI=False, #switch to true to add to exp window
     units='deg')
 
@@ -117,7 +118,7 @@ win.recordFrameIntervals = True
 #Changing the font to Arial fixed the right arrow problem.
 target_arrow = visual.TextStim(win, 
     pos=[0,0], 
-    color='#000000',
+    color='#FFFFFF',
     alignHoriz='center',
     height=2,
     font='Arial',
@@ -129,7 +130,7 @@ flanker_pos = [-4, -2, 2, 4]
 for i in range(0, len(flanker_pos)):
     flanker_stimuli.append(visual.TextStim(win,
     pos=[0,flanker_pos[i]],
-    color='#000000',
+    color='#FFFFFF',
     alignHoriz='center',
     height=2,
     font='Arial',
@@ -438,7 +439,8 @@ for thisBlock in blocks:
                         if "escape" == theseKeys:
                             endExpNow = True
                         resp.keys = theseKeys.name 
-                        resp.rt = theseKeys.rt 
+                        resp.rt = theseKeys.rt
+                        print(f'resp.rt: {resp.rt}')
 
                         if (resp.keys == str(corrAns)) or (resp.keys == corrAns):
                             resp.corr = 1
@@ -604,7 +606,7 @@ for thisBlock in blocks:
                             endExpNow = True
                         resp.keys = theseKeys.name 
                         resp.rt = theseKeys.rt 
-
+                        print(f'resp.rt: {resp.rt}')
                         if (resp.keys == str(corrAns)) or (resp.keys == corrAns):
                             resp.corr = 1
                             
@@ -811,7 +813,7 @@ for thisBlock in blocks:
                             endExpNow = True
                         resp.keys = theseKeys.name 
                         resp.rt = theseKeys.rt 
-
+                        print(f'resp.rt: {resp.rt}')
                         if (resp.keys == str(corrAns)) or (resp.keys == corrAns):
                             resp.corr = 1
                             
@@ -928,7 +930,7 @@ win.flip()
 #     sheetName='trials',
 #     stimOut=params,
 #     dataOut=['n', 'all_mean', 'all_std', 'all_raw'])
-thisExp.saveAsExcel(fileName + '.xlsx')
+# thisExp.saveAsExcel(fileName + '.xlsx')
 
 thisExp.abort()
 win.close()
