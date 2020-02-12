@@ -1,5 +1,23 @@
-# Current flanker build as of 9/24/19
+# Current flanker build as of 2/6/20
 
+# CREATE A COMMENTED SUMMARY OVERVIEW (significations of groups
+# variable meanings, block meanings, etc.)
+
+# create 2 dlg boxes: 1st one for the group letter and a subject
+# id number, both of which i input
+# myself; the 2nd with just age and gender
+
+# group A = no feedback
+# group B = 'good job' feedback only on corr resp
+# group C = 'good job' feedback regardless of performance
+
+# using block_params file containing block1, block2, and block3_params xlsx
+
+# remove PARTICIPANT field from dlg
+
+# INSTRUCTIONS: something about paying atten to fixation cross
+# create an exit screen that only i can exit (Thanks for participant)
+# ask about putting oops after incorrect group B
 
 import psychopy 
 from psychopy.hardware import keyboard
@@ -16,28 +34,33 @@ from pandas.io.common import EmptyDataError
 
 # def kb to keep track of 'escape' presses
 defaultKeyboard = keyboard.Keyboard()
-nIntervals = 500
-nTrials = 6
-nSplit = 3
-randomizeBlocks = True
-flankerDur = 0.080
-targetDur = 0.030
-respDur = 1.4
 respKeys = ['z', 'm']
 arrowNames = ['Left', 'Right']
-rtDeadline = 3.000      # responses after this time will be considered too slow (in seconds)
-rtTooSlowDur = 0.600    # duration of 'too slow!' message (in seconds)
 arrowChars = ["\u2190","\u2192"]
-expName = 'Flanker Test'
-instructions = "Press the key that matches the arrow in the CENTER -- try to ignore all other arrows. \n \
+expName = 'Flanker Task'
+msg = ''
+instructions = "Focus on the fixation cross sign at the start of each trial.\n\
+                \nPress the key that matches the arrow direction when the fixation disappears -- try to ignore all other arrows. \n\
                 \n Press on z if the arrow points to the left.\n\
                 \n Press on m if the arrow points to the right.\n\
                 \n Press the SPACEBAR to start the test."
 
 dateStr = time.strftime("%b_%d_%H%M", time.localtime())
-# GROUP A = FEEDBACK COND    GROUP B = NO FEEDBACK COND
-expInfo = {'participant': '', 'group': ''}
-dlg = gui.DlgFromDict(dictionary=expInfo, title = expName)
+fixedExpInfo = {'Subject ID': '','group': ''}
+fixedDlg = gui.DlgFromDict(
+    dictionary=fixedExpInfo,
+    title = expName,
+    order = ['Subject ID', 'group']
+    )
+if fixedDlg.OK:
+    print('ok')
+else:
+    core.quit()
+expInfo = {'age': '', 'gender': ''}
+dlg = gui.DlgFromDict(
+    dictionary=expInfo, 
+    title = expName,
+    order = ['age', 'gender'])
 if dlg.OK:
     #save params to file for next time
     #toFile('lastParams.pickle', expInfo)
@@ -48,18 +71,21 @@ else:
 expInfo['date'] = dateStr
 expInfo['expName'] = expName
 
-print(expInfo['group'])
+fixedExpInfo.update(expInfo)
 
-fileName = expInfo['participant'] + dateStr
+print(fixedExpInfo['group'])
+
+# fileName = expInfo['participant'] + dateStr
+fileName = fixedExpInfo['group'] +' SubID-' + fixedExpInfo['Subject ID'] + '-' + dateStr
 globalClock = core.Clock()
 logging.setDefaultClock(globalClock)
 
-#logging file
-logFileName = 'MyTestFlanker-%s-%s' % (expInfo['participant'], dateStr)
+# --------------- LOGGING FILE --------------- #
+logFileName = 'MyFlanker-%s-%s' % (expInfo['date'], dateStr)
 logging.LogFile((logFileName + '.log'), level=logging.INFO)
 logging.log(level=logging.INFO, msg='---START PARAMS---')
-logging.log(level=logging.INFO, msg='participant: %s' % expInfo['participant'])
-logging.log(level=logging.INFO, msg='group: %s' % expInfo['group'])
+logging.log(level=logging.INFO, msg='date: %s' % expInfo['date'])
+logging.log(level=logging.INFO, msg='group: %s' % fixedExpInfo['group'])
 logging.log(level=logging.INFO, msg='date: %s' % dateStr)
 logging.log(level=logging.INFO, msg='respKeys: %s' % respKeys)
 
@@ -70,22 +96,26 @@ endExpNow = False #flag for 'escape' from exp
 # Handles exp data as a whole. 
 thisExp = data.ExperimentHandler(
         name=expName,
-        extraInfo=expInfo,
+        extraInfo=fixedExpInfo,
         savePickle=True,
         saveWideText=True,
         dataFileName=fileName)
 
-# Start Code - runs before window
+# --------------- MONITOR & STIMULI CREATION --------------- #
 
-widthPix = 800
-heightPix = 600
+widthPix = 720
+heightPix = 540
+# widthPix = 2560
+# heightPix = 1600
 mon = monitors.Monitor('test', width=53.1, distance=60.)
 mon.setSizePix((widthPix, heightPix))
 win = visual.Window(
     monitor=mon,
     size=(widthPix, heightPix),
     colorSpace='rgb',
-    allowGUI=False,
+    color = '#000000',
+    fullscr=False,
+    allowGUI=False, #switch to true to add to exp window
     units='deg')
 
 # if i want to keep track of frames for measuring RT
@@ -94,7 +124,7 @@ win.recordFrameIntervals = True
 #Changing the font to Arial fixed the right arrow problem.
 target_arrow = visual.TextStim(win, 
     pos=[0,0], 
-    color='#000000',
+    color='#FFFFFF',
     alignHoriz='center',
     height=2,
     font='Arial',
@@ -106,7 +136,7 @@ flanker_pos = [-4, -2, 2, 4]
 for i in range(0, len(flanker_pos)):
     flanker_stimuli.append(visual.TextStim(win,
     pos=[0,flanker_pos[i]],
-    color='#000000',
+    color='#FFFFFF',
     alignHoriz='center',
     height=2,
     font='Arial',
@@ -133,18 +163,26 @@ instructText = visual.TextStim(win,
     text=instructions,
     name='instruct message')
 
+getreadyText = visual.TextStim(win,
+    text='Get Ready!',
+    name='get ready message',
+    font='Arial',
+    color='white'
+    )
+
 pauseText = visual.TextStim(win,
     name='pause',
-    text='break for 30 seconds',
+    text='break for 10 seconds',
     font='Arial',
     color='black', colorSpace='rgb',
     )
 
 feedbackText = visual.TextStim(win,
     name='feedback',
-    text='Test feedback',
+    pos=[0,0],
+    text='default text',
     font='Arial',
-    color='black',
+    color='green',
     colorSpace='rgb'
     )
 
@@ -156,16 +194,28 @@ lastRoundFeedbackText = visual.TextStim(win,
     colorSpace='rgb'
     )
 
+thanksText = visual.TextStim(win,
+    name='thanks text',
+    pos=[0,0],
+    text='Thank you for your participation!\n\
+    \n To minimize distraction, Please remain seated until all participants have finished.',
+    font='Arial',
+    color='white',
+    colorSpace='rgb'
+    )
+
 # Created some handy clocks and timers to keep track of blocks and trials
 trialTimer = core.CountdownTimer()
 pauseTimer = core.CountdownTimer()
+getReadyTimer = core.CountdownTimer()
 pauseClock = core.Clock()
 feedbackClock = core.Clock()
+feedbackTimer = core.CountdownTimer()
 lastFeedbackClock = core.Clock()
 trialClock = core.Clock()
 instructClock = core.Clock()
 blockClock = core.Clock()
-
+thanksClock = core.Clock()
 
 t = 0
 instructClock.reset()
@@ -183,7 +233,7 @@ for thisComp in instructComps:
     if hasattr(thisComp, 'status'):
         thisComp.status = NOT_STARTED
 
-# -----Start Instuctions------
+# --------------- STARTING INSTRUCTIONS --------------- #
 while continueTrial:
     # print('continuing')
     t = instructClock.getTime()
@@ -214,8 +264,10 @@ while continueTrial:
                 endExpNow = True
             # print('not continuing')
             continueTrial = False
+    # clear events or it will register keys have already been pressed
+    defaultKeyboard.clearEvents()
     if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
-        print('core quit')
+        print('core start trial quit')
         core.quit()
 
     if not continueTrial:
@@ -234,12 +286,12 @@ for thisComp in instructComps:
     if hasattr(thisComp, "setAutoDraw"):
         thisComp.setAutoDraw(False)
 
-blockClock.reset()
+# --------------- BLOCKS CREATION --------------- #
 
 blocks = data.TrialHandler(
     nReps=1,
     method='random',
-    extraInfo=expInfo,
+    extraInfo=fixedExpInfo,
     originPath=1,
     trialList=data.importConditions('block_params.xlsx'),
     seed=None,
@@ -251,10 +303,13 @@ if thisBlock != None:
     for paramName in thisBlock:
         exec('{} = thisBlock[paramName]'.format(paramName))
 
+# --------------- LOOPING BLOCKS --------------- #
+
 for thisBlock in blocks:
     currentLoop = blocks
     block_RT_list = []
     corr_list = []
+
 
     # block_RT_list.clear()
     # corr_list.clear()
@@ -264,9 +319,10 @@ for thisBlock in blocks:
             exec('{} = thisBlock[paramName]'.format(paramName))
 
 
+    # --------------- ADDING TRIALS TO BLOCK LOOP --------------- #
     trials = data.TrialHandler(nReps=1,
             method='random',
-            extraInfo=expInfo,
+            extraInfo=fixedExpInfo,
             originPath=-1,
             trialList=data.importConditions(condsFile),
             seed=None,
@@ -274,352 +330,16 @@ for thisBlock in blocks:
     thisExp.addLoop(trials)
     thisTrial = trials.trialList[0]
 
-    if thisTrial != None:
-        for paramName in thisTrial:
-            exec('{} = thisTrial[paramName]'.format(paramName))
+    blockClock.reset()
+    getReadyTimer.add(4.0)
 
-    for thisTrial in trials:
-        currentLoop = trials
-        # abbreviate parameter names if possible (e.g. rgb = thisTrial.rgb)
-        if thisTrial != None:
-            for paramName in thisTrial:
-                exec('{} = thisTrial[paramName]'.format(paramName))
-        
-        # ------Prepare to start Routine "trial"-------
-        t = 0
-        trialClock.reset()  # clock
-        frameN = -1
-        continueTrial = True
-        resp = keyboard.Keyboard()
+    while getReadyTimer.getTime() > 0:
+        t = blockClock.getTime()
+        if t >= 0.0:
+            getreadyText.draw()
 
-        # update w/ new params every repeat
-        for flanker in flanker_stimuli:
-            flanker.text = arrowChars[flankerDirc]
-
-        target_arrow.text = arrowChars[targetDirc]
-
-        trialComps = [flanker, target_arrow, resp]
-        for thisComp in trialComps:
-            thisComp.tStart = None
-            thisComp.tStop = None
-            thisComp.tStartRefresh = None
-            thisComp.tStopRefresh = None
-            if hasattr(thisComp, 'status'):
-                thisComp.status = NOT_STARTED
-
-        
-
-        while continueTrial:
-            t = trialClock.getTime()
-            
-            frameN = frameN + 1 
-            
-            # RETURN TO 0.5
-            if t >= 0:
-                fixationText.setAutoDraw(True)
-
-            # RETURN TO 3.0
-            if t >= 1:
-                fixationText.setAutoDraw(False)
-                win.flip()
-
-            # RETURN TO 3.0
-            if t >= 1:
-                # doing a for loop to set autodraw true to ALL flanks
-                for flanker in flanker_stimuli:
-                    # win.timeOnFlip(flanker, 'tStartRefresh')
-                    flanker.setAutoDraw(True)
-
-            # RETURN TO 4.0
-            if t >= 1.5 and target_arrow.status == NOT_STARTED:
-                target_arrow.tStart = t
-                target_arrow.frameNStart = frameN
-                win.timeOnFlip(target_arrow, 'tStartRefresh')
-                target_arrow.setAutoDraw(True)
-
-            # RETURN TO 4.0
-            if t >= 1.5 and resp.status == NOT_STARTED:
-                resp.tStart = t 
-                resp.frameNStart = frameN
-                win.timeOnFlip(resp, 'tStartRefresh')
-                resp.status = STARTED
-                win.callOnFlip(resp.clock.reset)
-                resp.clearEvents(eventType='keyboard')
-
-            # RETURN TO 7.0
-            if t >= 3.0:
-                target_arrow.setAutoDraw(False)
-                for flanker in flanker_stimuli:
-                    flanker.setAutoDraw(False)
-                tooSlowStim.setAutoDraw(True)
-
-            # RETURN TO 8.5
-            if t >= 3.5:
-                tooSlowStim.setAutoDraw(False)
-                continueTrial = False
-
-            # print(f'resp status: {resp.status}')
-
-            if resp.status == STARTED:
-                theseKeys = resp.getKeys(keyList=respKeys, waitRelease=False)
-                if len(theseKeys):
-                    theseKeys = theseKeys[0]
-
-                    if "escape" == theseKeys:
-                        endExpNow = True
-                    resp.keys = theseKeys.name 
-                    resp.rt = theseKeys.rt 
-
-                    if (resp.keys == str(corrAns)) or (resp.keys == corrAns):
-                        resp.corr = 1
-                        print(f"{resp.corr}: correct")
-                        print(f"key: {resp.keys}")
-                    else:
-                        resp.corr = 0
-                        print(f"{resp.corr}: incorrect")
-                        print(f"key: {resp.keys}")
-
-                    if resp.keys in ['', [], None]:
-                        resp.corr = None
-
-                    continueTrial = False
-
-            if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
-                core.quit()
-
-            if not continueTrial:
-                break
-
-            continueTrial = False
-            for thisComp in trialComps:
-                if hasattr(thisComp, "status") and thisComp.status != FINISHED:
-                    continueTrial = True
-                    break
-
-            if continueTrial:
-                win.flip()
-
-        for thisComp in trialComps:
-            if hasattr(thisComp, "setAutoDraw"):
-                thisComp.setAutoDraw(False)
-            # doing a for loop in order to set ALL flanks to autodraw false
-            for flanker in flanker_stimuli:
-                flanker.setAutoDraw(False)
-
-        
-        trials.addData('kb.keys', resp.keys)
-        trials.addData('kb.corr', resp.corr)
-        corr_list.append(resp.corr)
-        if resp.keys != None:
-            trials.addData('kb.rt', resp.rt)
-            block_RT_list.append(resp.rt)
-            # print(f"kb RT: {kb.rt}")
-        thisExp.nextEntry()
-
-    print(expInfo['group'])
-    if expInfo.get('group') == 'A':
-        print('launching A feedback')
-        # print(expInfo.get('group') == 'B')
-        if blocks.thisTrialN == 0:
-            # Prepare to start "Feedback" routine
-            fb = keyboard.Keyboard()
-            fb.clearEvents()
-            # event.clearEvents()
-            frameN = -1
-            t = 0
-            waiting = True
-            feedbackClock.reset()
-            feedbackComps = [feedbackText, fb]
-            for thisFbComp in feedbackComps:
-                thisFbComp.tStart = None
-                thisFbComp.tStop = None 
-                thisFbComp.tStartRefresh = None 
-                thisFbComp.tStopRefresh = None 
-                if hasattr(thisFbComp, 'status'):
-                    thisFbComp.status = NOT_STARTED
-
-            rt_array = np.array(block_RT_list)
-            corr_array = np.array(corr_list)
-            fc_mean_rt = rt_array.mean()
-            corr_sum = corr_array.sum()
-
-            txt = 'Good Job!\n\n'
-            txt += ('You got {} correct out of 12\n\n'.format(corr_sum))
-            txt += ('Your average reaction time was {0:.2f} seconds\n\n'.format(fc_mean_rt))
-            txt += 'Try to be as quick and accurate as possible\n\n'
-            txt += 'Get ready for the next round!\n\n\n'
-            txt += 'Press ENTER when ready'
-
-
-            while waiting:
-                # print('waiting top true')
-                fb.clearEvents()
-                t = feedbackClock.getTime()
-                frameN = frameN + 1
-                # print(f'feedback status: {feedbackText.status}')
-                if t >= 0.5 and feedbackText.status == NOT_STARTED:
-                    feedbackText.tStart = t
-                    feedbackText.frameNStart = frameN
-                    win.timeOnFlip(feedbackText, 'tStartRefresh')
-                    feedbackText.setText(txt)
-                    feedbackText.setAutoDraw(True)
-
-                # print(block_RT_list)
-                if t >= 1.5 and fb.status == NOT_STARTED:
-                    fb.tStart = t
-                    fb.frameNStart = frameN
-                    win.timeOnFlip(fb, 'tStartRefresh')
-                    fb.status = STARTED
-                    fb.clearEvents(eventType='keyboard')
-
-                # print(f'fb status: {fb.status}')
-                if fb.status == STARTED:
-                    theseKeys = fb.getKeys(keyList=["return"], waitRelease=False)
-                    if len(theseKeys):
-                        theseKeys = theseKeys[0]
-                        print(f'key pressed: {theseKeys}')    
-
-                        if "escape" == theseKeys:
-                            endExpNow = True
-                        waiting = False 
-                        print('waiting keyboard false')
-
-                if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
-                    core.quit
-
-                if not waiting:
-                    print('waiting false. break')
-                    break
-
-                waiting = False
-                # print('waiting false. after if not waiting')
-
-                # print(f'fb status before fbComp: {fb.status}')
-                for thisFbComp in feedbackComps:
-                    # print(f'comp status: {thisFbComp.status}')
-
-                    if hasattr(thisFbComp, "status") and thisFbComp.status != FINISHED:
-                        waiting = True
-                        # print('waiting true. this comp')
-                        break
-
-                if waiting:
-                    win.flip()
-                    # print('waiting, flip')
-
-            for thisFbComp in feedbackComps:
-                if hasattr(thisFbComp, "setAutoDraw"):
-                    thisFbComp.setAutoDraw(False)
-
-        elif blocks.thisTrialN == 1:
-            lfb = keyboard.Keyboard()
-            lfb.clearEvents()
-            # event.clearEvents()
-            frameN = -1
-            t = 0
-            waiting = True
-            lastFeedbackClock.reset()
-            lastFeedbackComps = [lastRoundFeedbackText, lfb]
-            for thisComp in lastFeedbackComps:
-                thisComp.tStart = None
-                thisComp.tStop = None 
-                thisComp.tStartRefresh = None 
-                thisComp.tStopRefresh = None 
-                if hasattr(thisComp, 'status'):
-                    thisComp.status = NOT_STARTED
-
-            rt_array = np.array(block_RT_list)
-            corr_array = np.array(corr_list)
-            fc_mean_rt = rt_array.mean()
-            corr_sum = corr_array.sum()
-
-            txt = 'Good Job!\n\n'
-            txt += ('You got {} correct out of 12\n\n'.format(corr_sum))
-            txt += ('Your average reaction time was {0:.2f} seconds\n\n'.format(fc_mean_rt))
-            txt += 'Get ready for the final round!!!\n\n\n'
-            txt += 'Press ENTER when ready'
-
-
-
-            while waiting:
-                # print('waiting top true')
-                lfb.clearEvents()
-                t = lastFeedbackClock.getTime()
-                frameN = frameN + 1
-                # print(f'feedback status: {feedbackText.status}')
-                if t >= 0.5 and lastRoundFeedbackText.status == NOT_STARTED:
-                    lastRoundFeedbackText.tStart = t
-                    lastRoundFeedbackText.frameNStart = frameN
-                    win.timeOnFlip(lastRoundFeedbackText, 'tStartRefresh')
-                    lastRoundFeedbackText.setText(txt)
-                    lastRoundFeedbackText.setAutoDraw(True)
-
-                # print(block_RT_list)
-                if t >= 1.5 and lfb.status == NOT_STARTED:
-                    lfb.tStart = t
-                    lfb.frameNStart = frameN
-                    win.timeOnFlip(lfb, 'tStartRefresh')
-                    lfb.status = STARTED
-                    lfb.clearEvents(eventType='keyboard')
-
-                # print(f'fb status: {fb.status}')
-                if lfb.status == STARTED:
-                    theseKeys = lfb.getKeys(keyList=["return"], waitRelease=False)
-                    if len(theseKeys):
-                        theseKeys = theseKeys[0]
-                        # print(f'key pressed: {theseKeys}')    
-
-                        if "escape" == theseKeys:
-                            endExpNow = True
-                        waiting = False 
-                        # print('waiting keyboard false')
-
-                if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
-                    core.quit
-
-                if not waiting:
-                    # print('waiting false. break')
-                    break
-
-                waiting = False
-                # print('waiting false. after if not waiting')
-
-                # print(f'fb status before fbComp: {fb.status}')
-                for thisComp in lastFeedbackComps:
-                    if hasattr(thisComp, "status") and thisComp.status != FINISHED:
-                        waiting = True
-                        break
-
-                if waiting:
-                    win.flip()
-
-            for thisComp in lastFeedbackComps:
-                if hasattr(thisComp, "setAutoDraw"):
-                    thisComp.setAutoDraw(False)
-
-        elif blocks.thisTrialN == 2:
-            # if this is the end of the 2nd block...
-            break
-            # pauseTimer.reset()
-
-            # # Prepare to start "Pause" routine
-            # t = 0
-            # pauseClock.reset()
-            # frameN = -1
-            # continueTrial = True
-            # # will update with 30 secs later
-            # pauseTimer.add(5.0)
-
-            # pauseComps = [pauseText]
-            # for thisComp in pauseComps:
-            #     thisComp.tStart = None
-            #     thisComp.tStop = None 
-            #     thisComp.tStartRefresh = None 
-            #     thisComp.tStopRefresh = None 
-            #     if hasattr(thisComp, 'status'):
-            #         thisComp.status = NOT_STARTED
-
-            # while pauseTimer.getTime() > 0:
+        win.flip()
+    # while pauseTimer.getTime() > 0:
             #     t = pauseClock.getTime()
             #     frameN = frameN + 1
 
@@ -627,189 +347,678 @@ for thisBlock in blocks:
             #         pauseText.draw()
             #         win.logOnFlip(level=logging.EXP, msg='Display pause time')
 
-            #     if endExpNow or defaultKeyboard.getKeys(keyList=['escape']):
-            #         core.quit
+    if thisTrial != None:
+        for paramName in thisTrial:
+            exec('{} = thisTrial[paramName]'.format(paramName))
 
-            #     win.flip()
+    # --------------- LAUNCHING GROUP A: NO FB ---------------- #
 
-    elif expInfo.get('group') == 'B':
-        print('running B no feedback')
-        if blocks.thisTrialN == 2:
-            break
+    if fixedExpInfo['group'] == 'A':
+        print('launching group A')
 
-        else:
-            pauseTimer.reset()
-
-            # Prepare to start "Pause" routine
+        for thisTrial in trials:
+            currentLoop = trials
+            # abbreviate parameter names if possible (e.g. rgb = thisTrial.rgb)
+            if thisTrial != None:
+                for paramName in thisTrial:
+                    exec('{} = thisTrial[paramName]'.format(paramName))
+            
+            # ------Prepare to start Routine "trial"-------
             t = 0
-            pauseClock.reset()
+            trialClock.reset()  # clock
             frameN = -1
             continueTrial = True
-            # will update with 30 secs later
-            pauseTimer.add(5.0)
+            resp = keyboard.Keyboard()
 
-            pauseComps = [pauseText]
-            for thisComp in pauseComps:
+            # update w/ new params every repeat
+            # using conds from xls files (so magical!)
+            # conds xls contains blocks 1, 2, and 3 xls params
+            for flanker in flanker_stimuli:
+                flanker.text = arrowChars[flankerDirc]
+
+            target_arrow.text = arrowChars[targetDirc]
+
+            trialComps = [flanker, target_arrow, resp]
+            for thisComp in trialComps:
                 thisComp.tStart = None
-                thisComp.tStop = None 
-                thisComp.tStartRefresh = None 
-                thisComp.tStopRefresh = None 
+                thisComp.tStop = None
+                thisComp.tStartRefresh = None
+                thisComp.tStopRefresh = None
                 if hasattr(thisComp, 'status'):
                     thisComp.status = NOT_STARTED
 
-            while pauseTimer.getTime() > 0:
-                t = pauseClock.getTime()
+            
+
+            while continueTrial:
+                t = trialClock.getTime()
+                
+                frameN = frameN + 1 
+                
+                # RETURN TO 0.5
+                if t >= 0.0:
+                    fixationText.setAutoDraw(True)
+
+                # RETURN TO 3.0
+                if t >= 0.1:
+                    fixationText.setAutoDraw(False)
+                    win.flip()
+
+                # RETURN TO 3.0
+                if t >= 0.4:
+                    # doing a for loop to set autodraw true to ALL flanks
+                    for flanker in flanker_stimuli:
+                        # win.timeOnFlip(flanker, 'tStartRefresh')
+                        flanker.setAutoDraw(True)
+
+                # RETURN TO 4.0
+                if t >= 0.8 and target_arrow.status == NOT_STARTED:
+                    target_arrow.tStart = t
+                    target_arrow.frameNStart = frameN
+                    win.timeOnFlip(target_arrow, 'tStartRefresh')
+                    target_arrow.setAutoDraw(True)
+
+                # RETURN TO 4.0
+                if t >= 0.8 and resp.status == NOT_STARTED:
+                    resp.tStart = t 
+                    resp.frameNStart = frameN
+                    win.timeOnFlip(resp, 'tStartRefresh')
+                    resp.status = STARTED
+                    win.callOnFlip(resp.clock.reset)
+                    resp.clearEvents(eventType='keyboard')
+
+                # corrNumResp = []
+                # print(corrNumResp)
+                
+
+                # RETURN TO 7.0
+                if t >= 4.0:
+                    target_arrow.setAutoDraw(False)
+                    for flanker in flanker_stimuli:
+                        flanker.setAutoDraw(False)
+                    tooSlowStim.setAutoDraw(True)
+
+                # RETURN TO 8.5
+                if t >= 5.0:
+                    tooSlowStim.setAutoDraw(False)
+                    continueTrial = False
+
+                # print(f'resp status: {resp.status}')
+
+                f = 0
+                feedbackClock.reset()
+                trialTimer.reset()
+
+                if resp.status == STARTED:
+                    theseKeys = resp.getKeys(keyList=respKeys, waitRelease=False)
+                    if len(theseKeys):
+                        theseKeys = theseKeys[0]
+                        if "escape" == theseKeys:
+                            endExpNow = True
+                        resp.keys = theseKeys.name 
+                        resp.rt = theseKeys.rt
+                        print(f'resp.rt: {resp.rt}')
+
+                        if (resp.keys == str(corrAns)) or (resp.keys == corrAns):
+                            resp.corr = 1
+                            
+                            print(f"{resp.corr}: correct")
+                            print(f"key: {resp.keys}")
+                        else:
+                            resp.corr = 0
+                            print(f"{resp.corr}: incorrect")
+                            print(f"key: {resp.keys}")
+
+                        if resp.keys in ['', [], None]:
+                            resp.corr = None
+
+                        # # ---------- FEEDBACK ---------- #
+                        # if expInfo['group'] == 'A':
+                        #     print('showing A: no fb')
+                        #     # continueTrial = False
+                        # elif expInfo['group'] == 'B':
+                        #     print('showing B: fb on corr resp')
+                        #     # continueTrial = False
+                        #     # if resp.corr == 1:
+                        #     #     feedbackText.setAutoDraw(True)
+                        # elif expInfo['group C'] == 'C':
+                        #     print('showing C: fb regardless corr resp')
+
+                        continueTrial = False
+
+                if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+                    core.quit()
+
+                if not continueTrial:
+                    break
+
+                continueTrial = False
+                for thisComp in trialComps:
+                    if hasattr(thisComp, "status") and thisComp.status != FINISHED:
+                        continueTrial = True
+                        break
+
+                if continueTrial:
+                    win.flip()
+
+            for thisComp in trialComps:
+                if hasattr(thisComp, "setAutoDraw"):
+                    thisComp.setAutoDraw(False)
+                    # feedbackText.setAutoDraw(False)
+                # doing a for loop in order to set ALL flanks to autodraw false
+                for flanker in flanker_stimuli:
+                    flanker.setAutoDraw(False)
+            
+            trials.addData('kb.keys', resp.keys)
+            trials.addData('kb.corr', resp.corr)
+            corr_list.append(resp.corr)
+            if resp.keys != None:
+                trials.addData('kb.rt', resp.rt)
+                block_RT_list.append(resp.rt)
+                # print(f"kb RT: {kb.rt}")
+            thisExp.nextEntry()
+
+
+    # --------------- LAUNCHING GROUP B: FB ON CORR RESP ---------------- #
+
+    if fixedExpInfo['group'] == 'B':
+        print('launching group B')
+
+        for thisTrial in trials:
+            currentLoop = trials
+            # abbreviate parameter names if possible (e.g. rgb = thisTrial.rgb)
+            if thisTrial != None:
+                for paramName in thisTrial:
+                    exec('{} = thisTrial[paramName]'.format(paramName))
+            
+            # ------Prepare to start Routine "trial"-------
+            t = 0
+            trialClock.reset()  # clock
+            frameN = -1
+            continueTrial = True
+            resp = keyboard.Keyboard()
+
+            # update w/ new params every repeat
+            # using conds from xls files (so magical!)
+            for flanker in flanker_stimuli:
+                flanker.text = arrowChars[flankerDirc]
+
+            target_arrow.text = arrowChars[targetDirc]
+
+            trialComps = [flanker, target_arrow, resp]
+            for thisComp in trialComps:
+                thisComp.tStart = None
+                thisComp.tStop = None
+                thisComp.tStartRefresh = None
+                thisComp.tStopRefresh = None
+                if hasattr(thisComp, 'status'):
+                    thisComp.status = NOT_STARTED
+
+            
+
+            while continueTrial:
+                t = trialClock.getTime()
+                
+                frameN = frameN + 1 
+                
+                # RETURN TO 0.5
+                if t >= 0.5:
+                    fixationText.setAutoDraw(True)
+
+                # RETURN TO 3.0
+                if t >= 1.0:
+                    fixationText.setAutoDraw(False)
+                    win.flip()
+
+                # RETURN TO 3.0
+                if t >= 1.5:
+                    # doing a for loop to set autodraw true to ALL flanks
+                    for flanker in flanker_stimuli:
+                        # win.timeOnFlip(flanker, 'tStartRefresh')
+                        flanker.setAutoDraw(True)
+
+                # RETURN TO 4.0
+                if t >= 2.0 and target_arrow.status == NOT_STARTED:
+                    target_arrow.tStart = t
+                    target_arrow.frameNStart = frameN
+                    win.timeOnFlip(target_arrow, 'tStartRefresh')
+                    target_arrow.setAutoDraw(True)
+
+                # RETURN TO 4.0
+                if t >= 2.0 and resp.status == NOT_STARTED:
+                    resp.tStart = t 
+                    resp.frameNStart = frameN
+                    win.timeOnFlip(resp, 'tStartRefresh')
+                    resp.status = STARTED
+                    win.callOnFlip(resp.clock.reset)
+                    resp.clearEvents(eventType='keyboard')
+
+                # corrNumResp = []
+                # print(corrNumResp)
+                
+
+                # RETURN TO 7.0
+                if t >= 4.0:
+                    target_arrow.setAutoDraw(False)
+                    for flanker in flanker_stimuli:
+                        flanker.setAutoDraw(False)
+                    tooSlowStim.setAutoDraw(True)
+
+                # RETURN TO 8.5
+                if t >= 5.0:
+                    tooSlowStim.setAutoDraw(False)
+                    continueTrial = False
+
+                # print(f'resp status: {resp.status}')
+
+                f = 0
+                feedbackClock.reset()
+                trialTimer.reset()
+
+                if resp.status == STARTED:
+                    theseKeys = resp.getKeys(keyList=respKeys, waitRelease=False)
+                    if len(theseKeys):
+                        theseKeys = theseKeys[0]
+                        if "escape" == theseKeys:
+                            endExpNow = True
+                        resp.keys = theseKeys.name 
+                        resp.rt = theseKeys.rt 
+                        print(f'resp.rt: {resp.rt}')
+                        if (resp.keys == str(corrAns)) or (resp.keys == corrAns):
+                            resp.corr = 1
+                            
+                            print(f"{resp.corr}: correct")
+                            print(f"key: {resp.keys}")
+                        else:
+                            resp.corr = 0
+                            print(f"{resp.corr}: incorrect")
+                            print(f"key: {resp.keys}")
+
+                        if resp.keys in ['', [], None]:
+                            resp.corr = None
+
+                        continueTrial = False
+
+                if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+                    core.quit()
+
+                if not continueTrial:
+                    break
+
+                continueTrial = False
+                for thisComp in trialComps:
+                    if hasattr(thisComp, "status") and thisComp.status != FINISHED:
+                        continueTrial = True
+                        break
+
+                if continueTrial:
+                    win.flip()
+
+            for thisComp in trialComps:
+                if hasattr(thisComp, "setAutoDraw"):
+                    thisComp.setAutoDraw(False)
+                    # feedbackText.setAutoDraw(False)
+                # doing a for loop in order to set ALL flanks to autodraw false
+                for flanker in flanker_stimuli:
+                    flanker.setAutoDraw(False)
+            
+            trials.addData('kb.keys', resp.keys)
+            trials.addData('kb.corr', resp.corr)
+            corr_list.append(resp.corr)
+            if resp.keys != None:
+                trials.addData('kb.rt', resp.rt)
+                block_RT_list.append(resp.rt)
+                # print(f"kb RT: {kb.rt}")
+            # thisExp.nextEntry()
+            feedbackTimer.reset()
+            # ---------- PREPARING FEEDBACK ----------- #
+            t = 0
+            feedbackClock.reset()
+            frameN = -1
+            continueTrial = True
+            feedbackTimer.add(1)
+            print(f'resp corr: {resp.corr}')
+            if resp.corr == 1:
+                msg = "Correct! Good job!"
+            else:
+                msg = ""
+
+            feedbackText.setText(msg)
+
+            feedbackComps = [feedbackText]
+            for thisComp in feedbackComps:
+                    thisComp.tStart = None
+                    thisComp.tStop = None
+                    thisComp.tStartRefresh = None
+                    thisComp.tStopRefresh = None
+                    if hasattr(thisComp, 'status'):
+                        thisComp.status = NOT_STARTED
+
+            # ---------- STARTING FEEDBACK ---------- #
+            while continueTrial and feedbackTimer.getTime() > 0:
+                t = feedbackClock.getTime()
                 frameN = frameN + 1
+                if t >= 0.0 and feedbackText.status == NOT_STARTED:
+                    feedbackText.tStart = t 
+                    feedbackText.frameNStart = frameN
+                    win.timeOnFlip(feedbackText, 'tStartRefresh')
+                    feedbackText.setAutoDraw(True)
 
-                if t >= 0.0: 
-                    pauseText.draw()
-                    win.logOnFlip(level=logging.EXP, msg='Display pause time')
-
-                if endExpNow or defaultKeyboard.getKeys(keyList=['escape']):
+                if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
                     core.quit
 
-                win.flip()
+                if not continueTrial:
+                    break
+
+                continueTrial = False
+                for thisComp in feedbackComps:
+                    if hasattr(thisComp, "status") and thisComp.status != FINISHED:
+                        continueTrial = True
+                        break
+
+                if continueTrial:
+                    win.flip()
+
+            for thisComp in feedbackComps:
+                if hasattr(thisComp, "setAutoDraw"):
+                    thisComp.setAutoDraw(False)
+
+            thisExp.nextEntry()
+
+
+    # --------------- LAUNCHING GROUP C: FB EVERY TIME ---------------- #
+
+    if fixedExpInfo['group'] == 'C':
+        print('launching group C')
+
+        for thisTrial in trials:
+            currentLoop = trials
+            # abbreviate parameter names if possible (e.g. rgb = thisTrial.rgb)
+            if thisTrial != None:
+                for paramName in thisTrial:
+                    exec('{} = thisTrial[paramName]'.format(paramName))
+            
+            # ------Prepare to start Routine "trial"-------
+            t = 0
+            trialClock.reset()  # clock
+            frameN = -1
+            continueTrial = True
+            resp = keyboard.Keyboard()
+
+            # update w/ new params every repeat
+            # using conds from xls files (so magical!)
+            for flanker in flanker_stimuli:
+                flanker.text = arrowChars[flankerDirc]
+
+            target_arrow.text = arrowChars[targetDirc]
+
+            trialComps = [flanker, target_arrow, resp]
+            for thisComp in trialComps:
+                thisComp.tStart = None
+                thisComp.tStop = None
+                thisComp.tStartRefresh = None
+                thisComp.tStopRefresh = None
+                if hasattr(thisComp, 'status'):
+                    thisComp.status = NOT_STARTED
+
+            
+
+            while continueTrial:
+                t = trialClock.getTime()
+                
+                frameN = frameN + 1 
+                
+                # RETURN TO 0.5
+                if t >= 0.5:
+                    fixationText.setAutoDraw(True)
+
+                # RETURN TO 3.0
+                if t >= 1.0:
+                    fixationText.setAutoDraw(False)
+                    win.flip()
+
+                # RETURN TO 3.0
+                if t >= 1.5:
+                    # doing a for loop to set autodraw true to ALL flanks
+                    for flanker in flanker_stimuli:
+                        # win.timeOnFlip(flanker, 'tStartRefresh')
+                        flanker.setAutoDraw(True)
+
+                # RETURN TO 4.0
+                if t >= 2.0 and target_arrow.status == NOT_STARTED:
+                    target_arrow.tStart = t
+                    target_arrow.frameNStart = frameN
+                    win.timeOnFlip(target_arrow, 'tStartRefresh')
+                    target_arrow.setAutoDraw(True)
+
+                # RETURN TO 4.0
+                if t >= 2.0 and resp.status == NOT_STARTED:
+                    resp.tStart = t 
+                    resp.frameNStart = frameN
+                    win.timeOnFlip(resp, 'tStartRefresh')
+                    resp.status = STARTED
+                    win.callOnFlip(resp.clock.reset)
+                    resp.clearEvents(eventType='keyboard')
+
+                # corrNumResp = []
+                # print(corrNumResp)
+                
+
+                # RETURN TO 7.0
+                if t >= 4.0:
+                    target_arrow.setAutoDraw(False)
+                    for flanker in flanker_stimuli:
+                        flanker.setAutoDraw(False)
+                    tooSlowStim.setAutoDraw(True)
+
+                # RETURN TO 8.5
+                if t >= 5.0:
+                    tooSlowStim.setAutoDraw(False)
+                    continueTrial = False
+
+                # print(f'resp status: {resp.status}')
+
+                f = 0
+                feedbackClock.reset()
+                trialTimer.reset()
+
+                if resp.status == STARTED:
+                    theseKeys = resp.getKeys(keyList=respKeys, waitRelease=False)
+                    if len(theseKeys):
+                        theseKeys = theseKeys[0]
+                        if "escape" == theseKeys:
+                            endExpNow = True
+                        resp.keys = theseKeys.name 
+                        resp.rt = theseKeys.rt 
+                        print(f'resp.rt: {resp.rt}')
+                        if (resp.keys == str(corrAns)) or (resp.keys == corrAns):
+                            resp.corr = 1
+                            
+                            print(f"{resp.corr}: correct")
+                            print(f"key: {resp.keys}")
+                        else:
+                            resp.corr = 0
+                            print(f"{resp.corr}: incorrect")
+                            print(f"key: {resp.keys}")
+
+                        if resp.keys in ['', [], None]:
+                            resp.corr = None
+
+                        continueTrial = False
+
+                if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+                    core.quit()
+
+                if not continueTrial:
+                    break
+
+                continueTrial = False
+                for thisComp in trialComps:
+                    if hasattr(thisComp, "status") and thisComp.status != FINISHED:
+                        continueTrial = True
+                        break
+
+                if continueTrial:
+                    win.flip()
+
+            for thisComp in trialComps:
+                if hasattr(thisComp, "setAutoDraw"):
+                    thisComp.setAutoDraw(False)
+                    # feedbackText.setAutoDraw(False)
+                # doing a for loop in order to set ALL flanks to autodraw false
+                for flanker in flanker_stimuli:
+                    flanker.setAutoDraw(False)
+            
+            trials.addData('kb.keys', resp.keys)
+            trials.addData('kb.corr', resp.corr)
+            corr_list.append(resp.corr)
+            if resp.keys != None:
+                trials.addData('kb.rt', resp.rt)
+                block_RT_list.append(resp.rt)
+                # print(f"kb RT: {kb.rt}")
+            # thisExp.nextEntry()
+            feedbackTimer.reset()
+            # ---------- PREPARING FEEDBACK ----------- #
+            t = 0
+            feedbackClock.reset()
+            frameN = -1
+            continueTrial = True
+            feedbackTimer.add(1)
+            print(f'resp corr: {resp.corr}')
+            if resp.corr:
+                msg = "Good job!"
+
+            feedbackText.setText(msg)
+
+            feedbackComps = [feedbackText]
+            for thisComp in feedbackComps:
+                    thisComp.tStart = None
+                    thisComp.tStop = None
+                    thisComp.tStartRefresh = None
+                    thisComp.tStopRefresh = None
+                    if hasattr(thisComp, 'status'):
+                        thisComp.status = NOT_STARTED
+
+            # ---------- STARTING FEEDBACK ---------- #
+            while continueTrial and feedbackTimer.getTime() > 0:
+                t = feedbackClock.getTime()
+                frameN = frameN + 1
+                if t >= 0.0 and feedbackText.status == NOT_STARTED:
+                    feedbackText.tStart = t 
+                    feedbackText.frameNStart = frameN
+                    win.timeOnFlip(feedbackText, 'tStartRefresh')
+                    feedbackText.setAutoDraw(True)
+
+                if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+                    core.quit
+
+                if not continueTrial:
+                    break
+
+                continueTrial = False
+                for thisComp in feedbackComps:
+                    if hasattr(thisComp, "status") and thisComp.status != FINISHED:
+                        continueTrial = True
+                        break
+
+                if continueTrial:
+                    win.flip()
+
+            for thisComp in feedbackComps:
+                if hasattr(thisComp, "setAutoDraw"):
+                    thisComp.setAutoDraw(False)
+
+            thisExp.nextEntry()
+
+    
+    if blocks.thisTrialN == 0:
+        break
+
     # get stimulus params names
     if trials.trialList in ([], [None], None):
         params = []
     else:
         params = trials.trialList[0].keys()
 
+# -------------- "Thanks" Routine ------------------ #
+t = 0
+thanksClock.reset()
+frameN = -1
+continueTrial = True
+thanksresp = keyboard.Keyboard()
+# trialTimer.add(2.0)
 
-win.flip()
+thanksComp = [thanksText, thanksresp]
+for thisComp in thanksComp:
+    thisComp.tStart = None
+    thisComp.tStop = None
+    thisComp.tStartRefresh = None
+    thisComp.tStopRefresh = None
+    if hasattr(thisComp, 'status'):
+        thisComp.status = NOT_STARTED
+
+while continueTrial:
+    # print(f'thanks while continueTrial')
+    t = thanksClock.getTime()
+    frameN = frameN + 1
+
+    if t >= 0 and thanksText.status == NOT_STARTED:
+        thanksText.tStart = t 
+        thanksText.frameNStart = frameN
+        win.timeOnFlip(thanksText, 'tStartRefresh')
+        # print(f'thanks autodrawing true')
+        thanksText.setAutoDraw(True)
+
+    if t >= 0 and thanksresp.status == NOT_STARTED:
+        thanksresp.tStart = t 
+        thanksresp.frameNStart = frameN
+        win.timeOnFlip(thanksresp, 'tStartRefresh')
+        thanksresp.status = STARTED
+        thanksresp.clearEvents(eventType='keyboard')
+
+    if thanksresp.status == STARTED:
+        theseKeys = thanksresp.getKeys(keyList=['escape'], waitRelease=False)
+        if len(theseKeys):
+            theseKeys = theseKeys[0]
+            # if theseKeys == 'escape':
+            #     endExpNow = True
+            continueTrial = False
+
+    # if endExpNow or defaultKeyboard.getKeys(keyList=['escape']):
+    #     core.quit()
+
+    if not continueTrial:
+        break
+    continueTrial = False
+
+    for thisComp in thanksComp:
+        if hasattr(thisComp, 'status') and thisComp.status != FINISHED:
+            continueTrial = True
+            break
+
+    if continueTrial:
+        # print(f'thanks if cont trial: flip')
+        win.flip()
+
+for thisComp in thanksComp:
+    if hasattr(thisComp, "setAutoDraw"):
+            # print(f'thanks autodrawing false')
+            thisComp.setAutoDraw(False)
+
+
+# win.flip()
 # save data for this loop
 # trials.saveAsExcel(fileName + '.xlsx',
 #     sheetName='trials',
 #     stimOut=params,
 #     dataOut=['n', 'all_mean', 'all_std', 'all_raw'])
-thisExp.saveAsExcel(fileName + '.xlsx')
+# thisExp.saveAsWideText(fileName + '.csv')
 
+
+
+# win.flip()
+
+thisExp.saveAsWideText(fileName + '.csv')
 thisExp.abort()
 win.close()
 core.quit()
-
-
-# def runTrial(targetDir, flankerDir):
-#     continueTrial = True
-
-#     # while continueTrial:
-
-#     event.clearEvents()
-#     fixation.draw()
-#     win.logOnFlip(level=logging.EXP, msg='Display Fixation')
-#     win.flip()
-#     core.wait(1.0)
-    
-# #   get trial time
-#     tTrial = globalClock.getTime()
-#     # print(f'tTrial {tTrial}')
-#     timer = core.Clock()
-    
-# #    display flankers
-#     for flanker in flanker_stimuli:
-#         flanker.text = arrowChars[flankerDir]
-#         flanker.draw()
-#     win.logOnFlip(level=logging.EXP, msg=
-#         'Display %s Flankers'%arrowNames[flankerDir])
-#     win.flip()
-#     core.wait(2.0)
-    
-# #   display flankers AND target arrow
-#     for flanker in flanker_stimuli:
-#         flanker.draw()
-#     target_arrow.text = arrowChars[targetDir]
-#     target_arrow.draw()
-#     trialClock.reset()
-#     win.logOnFlip(level=logging.EXP, msg=
-#         'Display %s Target'%arrowNames[targetDir])
-#     win.flip()
-#     event.clearEvents()
-#     timer.reset()
-#     kb.clock.reset()
-#     waitAllKeys = event.waitKeys()[0]
-#     print("wait all keys")
-#     # kb.status = STARTED
-#     core.wait(2.0)
-    
-#     getAllKeys = kb.getKeys(keyList= respKeys, waitRelease=False)  
-#     print(len(getAllKeys))  
-#     # if len(getAllKeys):
-#     #     getAllKeys = getAllKeys[0]
-#     #     continueTrial = False
-
-#     win.logOnFlip(level=logging.EXP, msg='Display Blank')
-#     win.flip()
-#     core.wait(2.0)
-    
-
-#     return (tTrial, getAllKeys)
-
-# trials = data.TrialHandler(nReps=1.0,
-#         method='random',
-#         extraInfo=expInfo,
-#         originPath=-1,
-#         trialList=data.importConditions('flanker_trial_params.xlsx'),
-#         seed=None,
-#         name='trials')
-# thisExp.addLoop(trials)
-# thisTrial = trials.trialList[0]
-# tkb = keyboard.Keyboard()
-
-# if thisTrial != None:
-#         for paramName in thisTrial:
-#             exec('{} = thisTrial[paramName]'.format(paramName))
-
-# for thisTrial in trials:
-#     tkb.clearEvents()
-#     currentLoop = trials
-#     if thisTrial != None:
-#         for paramName in thisTrial:
-#             exec('{} = thisTrial[paramName]'.format(paramName))
-
-#     flankerDir = flankerDirc
-#     targetDir = targetDirc
-
-#     [tTrial, allKeys] = runTrial(targetDir, flankerDir)
-
-#     if len(allKeys):
-#         allKeys = allKeys[0]
-
-#         tkb.keys = allKeys.name
-#         tkb.rt = allKeys.rt * 1000
-
-#         if (tkb.keys == str(corrAns)) or (tkb.keys == corrAns):
-#             tkb.corr = 1
-#             print(f"{tkb.corr}: correct")
-#             print(f"key: {tkb.keys}")
-#         else:
-#             tkb.corr = 0
-#             print(f"{tkb.corr}: incorrect")
-#             print(f"key: {tkb.keys}")
-
-#     if tkb.keys in ['', [], None]:
-#         tkb.corr = None
-
-#     trials.addData('kb.keys', tkb.keys)
-#     trials.addData('kb.corr', tkb.corr)
-#     if tkb.keys != None:
-#         trials.addData('kb.rt', tkb.rt)
-#         # print(f"kb RT: {kb.rt}")
-
-#     thisExp.nextEntry()
-
-# # get stimulus params names
-# if trials.trialList in ([], [None], None):
-#     params = []
-# else:
-#     params = trials.trialList[0].keys()
-
-# # save data for this loop
-# trials.saveAsExcel(fileName + '.xlsx',
-#     sheetName='trials',
-#     stimOut=params,
-#     dataOut=['n', 'all_mean', 'all_std', 'all_raw'])
-
-# thisExp.abort()
-# win.close()
-# core.quit()
 

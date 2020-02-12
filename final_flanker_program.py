@@ -15,6 +15,17 @@
 
 # remove PARTICIPANT field from dlg
 
+# INSTRUCTIONS: something about paying atten to fixation cross
+# create an exit screen that only i can exit (Thanks for participant)
+# ask about putting oops after incorrect group B
+
+# measure accuracy? is there a trade-off that effects reaction time
+# create equal arrow display times for all groups
+# 30 sec warm-up instead of dropping block?
+# predict an inverse relationship: RT increases, Accur decreases
+# A and C: predict 
+# B could be motivated to be more accurate
+
 import psychopy 
 from psychopy.hardware import keyboard
 from psychopy import core, visual, gui, data, event, monitors, logging 
@@ -35,7 +46,8 @@ arrowNames = ['Left', 'Right']
 arrowChars = ["\u2190","\u2192"]
 expName = 'Flanker Task'
 msg = ''
-instructions = "Press the key that matches the arrow in the CENTER -- try to ignore all other arrows. \n\n\
+instructions = "Focus on the fixation cross sign at the start of each trial.\n\
+                \nPress the key that matches the arrow direction when the fixation disappears -- try to ignore all other arrows. \n\
                 \n Press on z if the arrow points to the left.\n\
                 \n Press on m if the arrow points to the right.\n\
                 \n Press the SPACEBAR to start the test."
@@ -109,6 +121,7 @@ win = visual.Window(
     size=(widthPix, heightPix),
     colorSpace='rgb',
     color = '#000000',
+    fullscr=True,
     allowGUI=False, #switch to true to add to exp window
     units='deg')
 
@@ -180,25 +193,27 @@ feedbackText = visual.TextStim(win,
     colorSpace='rgb'
     )
 
-lastRoundFeedbackText = visual.TextStim(win,
-    name='last feedback',
-    text='Test feedback',
+thanksText = visual.TextStim(win,
+    name='thanks text',
+    pos=[0,0],
+    text='Thank you for your participation!\n\
+    \n To minimize distraction, Please remain seated until all participants have finished.',
     font='Arial',
-    color='black',
+    color='white',
     colorSpace='rgb'
     )
 
 # Created some handy clocks and timers to keep track of blocks and trials
-trialTimer = core.CountdownTimer()
-pauseTimer = core.CountdownTimer()
-getReadyTimer = core.CountdownTimer()
-pauseClock = core.Clock()
-feedbackClock = core.Clock()
-feedbackTimer = core.CountdownTimer()
-lastFeedbackClock = core.Clock()
 trialClock = core.Clock()
 instructClock = core.Clock()
 blockClock = core.Clock()
+pauseClock = core.Clock()
+feedbackClock = core.Clock()
+thanksClock = core.Clock()
+trialTimer = core.CountdownTimer()
+pauseTimer = core.CountdownTimer()
+getReadyTimer = core.CountdownTimer()
+feedbackTimer = core.CountdownTimer()
 
 
 t = 0
@@ -379,30 +394,30 @@ for thisBlock in blocks:
                 frameN = frameN + 1 
                 
                 # RETURN TO 0.5
-                if t >= 0.5:
+                if t >= 0.1:
                     fixationText.setAutoDraw(True)
 
                 # RETURN TO 3.0
-                if t >= 1.0:
+                if t >= 0.3:
                     fixationText.setAutoDraw(False)
                     win.flip()
 
                 # RETURN TO 3.0
-                if t >= 1.5:
+                if t >= 0.3:
                     # doing a for loop to set autodraw true to ALL flanks
                     for flanker in flanker_stimuli:
                         # win.timeOnFlip(flanker, 'tStartRefresh')
                         flanker.setAutoDraw(True)
 
                 # RETURN TO 4.0
-                if t >= 2.0 and target_arrow.status == NOT_STARTED:
+                if t >= 0.5 and target_arrow.status == NOT_STARTED:
                     target_arrow.tStart = t
                     target_arrow.frameNStart = frameN
                     win.timeOnFlip(target_arrow, 'tStartRefresh')
                     target_arrow.setAutoDraw(True)
 
                 # RETURN TO 4.0
-                if t >= 2.0 and resp.status == NOT_STARTED:
+                if t >= 0.5 and resp.status == NOT_STARTED:
                     resp.tStart = t 
                     resp.frameNStart = frameN
                     win.timeOnFlip(resp, 'tStartRefresh')
@@ -914,7 +929,7 @@ for thisBlock in blocks:
             thisExp.nextEntry()
 
     
-    if blocks.thisTrialN == 2:
+    if blocks.thisTrialN == 0:
         break
 
     # get stimulus params names
@@ -923,15 +938,75 @@ for thisBlock in blocks:
     else:
         params = trials.trialList[0].keys()
 
+# -------------- "Thanks" Routine ------------------ #
+t = 0
+thanksClock.reset()
+frameN = -1
+continueTrial = True
+thanksresp = keyboard.Keyboard()
+# trialTimer.add(2.0)
 
-win.flip()
-# save data for this loop
-# trials.saveAsExcel(fileName + '.xlsx',
-#     sheetName='trials',
-#     stimOut=params,
-#     dataOut=['n', 'all_mean', 'all_std', 'all_raw'])
-# thisExp.saveAsExcel(fileName + '.xlsx')
+thanksComp = [thanksText, thanksresp]
+for thisComp in thanksComp:
+    thisComp.tStart = None
+    thisComp.tStop = None
+    thisComp.tStartRefresh = None
+    thisComp.tStopRefresh = None
+    if hasattr(thisComp, 'status'):
+        thisComp.status = NOT_STARTED
 
+while continueTrial:
+    # print(f'thanks while continueTrial')
+    t = thanksClock.getTime()
+    frameN = frameN + 1
+
+    if t >= 0 and thanksText.status == NOT_STARTED:
+        thanksText.tStart = t 
+        thanksText.frameNStart = frameN
+        win.timeOnFlip(thanksText, 'tStartRefresh')
+        # print(f'thanks autodrawing true')
+        thanksText.setAutoDraw(True)
+
+    if t >= 0 and thanksresp.status == NOT_STARTED:
+        thanksresp.tStart = t 
+        thanksresp.frameNStart = frameN
+        win.timeOnFlip(thanksresp, 'tStartRefresh')
+        thanksresp.status = STARTED
+        thanksresp.clearEvents(eventType='keyboard')
+
+    if thanksresp.status == STARTED:
+        theseKeys = thanksresp.getKeys(keyList=['escape'], waitRelease=False)
+        if len(theseKeys):
+            theseKeys = theseKeys[0]
+            # if theseKeys == 'escape':
+            #     endExpNow = True
+            continueTrial = False
+
+    # if endExpNow or defaultKeyboard.getKeys(keyList=['escape']):
+    #     core.quit()
+
+    if not continueTrial:
+        break
+    continueTrial = False
+
+    for thisComp in thanksComp:
+        if hasattr(thisComp, 'status') and thisComp.status != FINISHED:
+            continueTrial = True
+            break
+
+    if continueTrial:
+        # print(f'thanks if cont trial: flip')
+        win.flip()
+
+for thisComp in thanksComp:
+    if hasattr(thisComp, "setAutoDraw"):
+            # print(f'thanks autodrawing false')
+            thisComp.setAutoDraw(False)
+
+
+# win.flip()
+
+thisExp.saveAsWideText(fileName + '.csv')
 thisExp.abort()
 win.close()
 core.quit()
