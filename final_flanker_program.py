@@ -19,6 +19,7 @@
 # create an exit screen that only i can exit (Thanks for participant)
 # ask about putting oops after incorrect group B
 
+# todo: figure how to handle missing values; jamovi is confused
 # measure accuracy? is there a trade-off that effects reaction time
 # create equal arrow display times for all groups
 # 30 sec warm-up instead of dropping block?
