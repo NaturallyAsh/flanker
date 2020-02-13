@@ -1,4 +1,4 @@
-# Current flanker build as of 2/6/20
+# Current flanker build as of 2/12/20
 
 # CREATE A COMMENTED SUMMARY OVERVIEW (significations of groups
 # variable meanings, block meanings, etc.)
@@ -82,7 +82,6 @@ fixedExpInfo.update(expInfo)
 
 print(fixedExpInfo['group'])
 
-# fileName = expInfo['participant'] + dateStr
 fileName = fixedExpInfo['group'] +' SubID-' + fixedExpInfo['Subject ID'] + '-' + dateStr
 globalClock = core.Clock()
 logging.setDefaultClock(globalClock)
@@ -234,7 +233,6 @@ for thisComp in instructComps:
 
 # --------------- STARTING INSTRUCTIONS --------------- #
 while continueTrial:
-    # print('continuing')
     t = instructClock.getTime()
     frameN = frameN + 1
 
@@ -251,17 +249,13 @@ while continueTrial:
         ready.status = STARTED
         ready.clearEvents(eventType='keyboard')
 
-    # print(f'keyboard status: {ready.status}')
     if ready.status == STARTED:
         theseKeys = ready.getKeys(keyList=["space"], waitRelease=False)
-        # print(len(theseKeys))
-        # print(theseKeys)
         if len(theseKeys):
             theseKeys = theseKeys[0]
 
             if "escape" == theseKeys:
                 endExpNow = True
-            # print('not continuing')
             continueTrial = False
     # clear events or it will register keys have already been pressed
     defaultKeyboard.clearEvents()
@@ -308,10 +302,6 @@ for thisBlock in blocks:
     currentLoop = blocks
     block_RT_list = []
     corr_list = []
-
-
-    # block_RT_list.clear()
-    # corr_list.clear()
 
     if thisBlock != None:
         for paramName in thisBlock:
@@ -393,31 +383,27 @@ for thisBlock in blocks:
                 
                 frameN = frameN + 1 
                 
-                # RETURN TO 0.5
-                if t >= 0.1:
+                # group A starts 1 sec faster since it has no 
+                # fb routine
+                if t >= 1.5:
                     fixationText.setAutoDraw(True)
 
-                # RETURN TO 3.0
-                if t >= 0.3:
+                if t >= 2.0:
                     fixationText.setAutoDraw(False)
                     win.flip()
 
-                # RETURN TO 3.0
-                if t >= 0.3:
+                if t >= 2.5:
                     # doing a for loop to set autodraw true to ALL flanks
                     for flanker in flanker_stimuli:
-                        # win.timeOnFlip(flanker, 'tStartRefresh')
                         flanker.setAutoDraw(True)
 
-                # RETURN TO 4.0
-                if t >= 0.5 and target_arrow.status == NOT_STARTED:
+                if t >= 3.0 and target_arrow.status == NOT_STARTED:
                     target_arrow.tStart = t
                     target_arrow.frameNStart = frameN
                     win.timeOnFlip(target_arrow, 'tStartRefresh')
                     target_arrow.setAutoDraw(True)
 
-                # RETURN TO 4.0
-                if t >= 0.5 and resp.status == NOT_STARTED:
+                if t >= 3.0 and resp.status == NOT_STARTED:
                     resp.tStart = t 
                     resp.frameNStart = frameN
                     win.timeOnFlip(resp, 'tStartRefresh')
@@ -425,23 +411,16 @@ for thisBlock in blocks:
                     win.callOnFlip(resp.clock.reset)
                     resp.clearEvents(eventType='keyboard')
 
-                # corrNumResp = []
-                # print(corrNumResp)
-                
-
-                # RETURN TO 7.0
-                if t >= 4.0:
+                if t >= 5.0:
                     target_arrow.setAutoDraw(False)
                     for flanker in flanker_stimuli:
                         flanker.setAutoDraw(False)
                     tooSlowStim.setAutoDraw(True)
 
-                # RETURN TO 8.5
-                if t >= 5.0:
+                if t >= 6.0:
                     tooSlowStim.setAutoDraw(False)
                     continueTrial = False
 
-                # print(f'resp status: {resp.status}')
 
                 f = 0
                 feedbackClock.reset()
@@ -469,18 +448,6 @@ for thisBlock in blocks:
 
                         if resp.keys in ['', [], None]:
                             resp.corr = None
-
-                        # # ---------- FEEDBACK ---------- #
-                        # if expInfo['group'] == 'A':
-                        #     print('showing A: no fb')
-                        #     # continueTrial = False
-                        # elif expInfo['group'] == 'B':
-                        #     print('showing B: fb on corr resp')
-                        #     # continueTrial = False
-                        #     # if resp.corr == 1:
-                        #     #     feedbackText.setAutoDraw(True)
-                        # elif expInfo['group C'] == 'C':
-                        #     print('showing C: fb regardless corr resp')
 
                         continueTrial = False
 
@@ -513,7 +480,6 @@ for thisBlock in blocks:
             if resp.keys != None:
                 trials.addData('kb.rt', resp.rt)
                 block_RT_list.append(resp.rt)
-                # print(f"kb RT: {kb.rt}")
             thisExp.nextEntry()
 
 
@@ -559,30 +525,24 @@ for thisBlock in blocks:
                 
                 frameN = frameN + 1 
                 
-                # RETURN TO 0.5
                 if t >= 0.5:
                     fixationText.setAutoDraw(True)
 
-                # RETURN TO 3.0
                 if t >= 1.0:
                     fixationText.setAutoDraw(False)
                     win.flip()
 
-                # RETURN TO 3.0
                 if t >= 1.5:
                     # doing a for loop to set autodraw true to ALL flanks
                     for flanker in flanker_stimuli:
-                        # win.timeOnFlip(flanker, 'tStartRefresh')
                         flanker.setAutoDraw(True)
 
-                # RETURN TO 4.0
                 if t >= 2.0 and target_arrow.status == NOT_STARTED:
                     target_arrow.tStart = t
                     target_arrow.frameNStart = frameN
                     win.timeOnFlip(target_arrow, 'tStartRefresh')
                     target_arrow.setAutoDraw(True)
 
-                # RETURN TO 4.0
                 if t >= 2.0 and resp.status == NOT_STARTED:
                     resp.tStart = t 
                     resp.frameNStart = frameN
@@ -591,23 +551,15 @@ for thisBlock in blocks:
                     win.callOnFlip(resp.clock.reset)
                     resp.clearEvents(eventType='keyboard')
 
-                # corrNumResp = []
-                # print(corrNumResp)
-                
-
-                # RETURN TO 7.0
                 if t >= 4.0:
                     target_arrow.setAutoDraw(False)
                     for flanker in flanker_stimuli:
                         flanker.setAutoDraw(False)
                     tooSlowStim.setAutoDraw(True)
 
-                # RETURN TO 8.5
                 if t >= 5.0:
                     tooSlowStim.setAutoDraw(False)
                     continueTrial = False
-
-                # print(f'resp status: {resp.status}')
 
                 f = 0
                 feedbackClock.reset()
@@ -655,7 +607,6 @@ for thisBlock in blocks:
             for thisComp in trialComps:
                 if hasattr(thisComp, "setAutoDraw"):
                     thisComp.setAutoDraw(False)
-                    # feedbackText.setAutoDraw(False)
                 # doing a for loop in order to set ALL flanks to autodraw false
                 for flanker in flanker_stimuli:
                     flanker.setAutoDraw(False)
@@ -666,8 +617,7 @@ for thisBlock in blocks:
             if resp.keys != None:
                 trials.addData('kb.rt', resp.rt)
                 block_RT_list.append(resp.rt)
-                # print(f"kb RT: {kb.rt}")
-            # thisExp.nextEntry()
+        
             feedbackTimer.reset()
             # ---------- PREPARING FEEDBACK ----------- #
             t = 0
@@ -766,30 +716,24 @@ for thisBlock in blocks:
                 
                 frameN = frameN + 1 
                 
-                # RETURN TO 0.5
                 if t >= 0.5:
                     fixationText.setAutoDraw(True)
 
-                # RETURN TO 3.0
                 if t >= 1.0:
                     fixationText.setAutoDraw(False)
                     win.flip()
 
-                # RETURN TO 3.0
                 if t >= 1.5:
                     # doing a for loop to set autodraw true to ALL flanks
                     for flanker in flanker_stimuli:
-                        # win.timeOnFlip(flanker, 'tStartRefresh')
                         flanker.setAutoDraw(True)
 
-                # RETURN TO 4.0
                 if t >= 2.0 and target_arrow.status == NOT_STARTED:
                     target_arrow.tStart = t
                     target_arrow.frameNStart = frameN
                     win.timeOnFlip(target_arrow, 'tStartRefresh')
                     target_arrow.setAutoDraw(True)
 
-                # RETURN TO 4.0
                 if t >= 2.0 and resp.status == NOT_STARTED:
                     resp.tStart = t 
                     resp.frameNStart = frameN
@@ -798,23 +742,16 @@ for thisBlock in blocks:
                     win.callOnFlip(resp.clock.reset)
                     resp.clearEvents(eventType='keyboard')
 
-                # corrNumResp = []
-                # print(corrNumResp)
-                
-
-                # RETURN TO 7.0
                 if t >= 4.0:
                     target_arrow.setAutoDraw(False)
                     for flanker in flanker_stimuli:
                         flanker.setAutoDraw(False)
                     tooSlowStim.setAutoDraw(True)
 
-                # RETURN TO 8.5
                 if t >= 5.0:
                     tooSlowStim.setAutoDraw(False)
                     continueTrial = False
 
-                # print(f'resp status: {resp.status}')
 
                 f = 0
                 feedbackClock.reset()
@@ -862,7 +799,6 @@ for thisBlock in blocks:
             for thisComp in trialComps:
                 if hasattr(thisComp, "setAutoDraw"):
                     thisComp.setAutoDraw(False)
-                    # feedbackText.setAutoDraw(False)
                 # doing a for loop in order to set ALL flanks to autodraw false
                 for flanker in flanker_stimuli:
                     flanker.setAutoDraw(False)
@@ -873,9 +809,9 @@ for thisBlock in blocks:
             if resp.keys != None:
                 trials.addData('kb.rt', resp.rt)
                 block_RT_list.append(resp.rt)
-                # print(f"kb RT: {kb.rt}")
-            # thisExp.nextEntry()
+                
             feedbackTimer.reset()
+
             # ---------- PREPARING FEEDBACK ----------- #
             t = 0
             feedbackClock.reset()
@@ -929,7 +865,7 @@ for thisBlock in blocks:
             thisExp.nextEntry()
 
     
-    if blocks.thisTrialN == 0:
+    if blocks.thisTrialN == 2:
         break
 
     # get stimulus params names
@@ -944,7 +880,6 @@ thanksClock.reset()
 frameN = -1
 continueTrial = True
 thanksresp = keyboard.Keyboard()
-# trialTimer.add(2.0)
 
 thanksComp = [thanksText, thanksresp]
 for thisComp in thanksComp:
@@ -956,7 +891,6 @@ for thisComp in thanksComp:
         thisComp.status = NOT_STARTED
 
 while continueTrial:
-    # print(f'thanks while continueTrial')
     t = thanksClock.getTime()
     frameN = frameN + 1
 
@@ -964,7 +898,6 @@ while continueTrial:
         thanksText.tStart = t 
         thanksText.frameNStart = frameN
         win.timeOnFlip(thanksText, 'tStartRefresh')
-        # print(f'thanks autodrawing true')
         thanksText.setAutoDraw(True)
 
     if t >= 0 and thanksresp.status == NOT_STARTED:
@@ -978,12 +911,7 @@ while continueTrial:
         theseKeys = thanksresp.getKeys(keyList=['escape'], waitRelease=False)
         if len(theseKeys):
             theseKeys = theseKeys[0]
-            # if theseKeys == 'escape':
-            #     endExpNow = True
             continueTrial = False
-
-    # if endExpNow or defaultKeyboard.getKeys(keyList=['escape']):
-    #     core.quit()
 
     if not continueTrial:
         break
@@ -995,12 +923,10 @@ while continueTrial:
             break
 
     if continueTrial:
-        # print(f'thanks if cont trial: flip')
         win.flip()
 
 for thisComp in thanksComp:
     if hasattr(thisComp, "setAutoDraw"):
-            # print(f'thanks autodrawing false')
             thisComp.setAutoDraw(False)
 
 
