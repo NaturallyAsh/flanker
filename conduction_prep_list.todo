@@ -3,7 +3,8 @@ Experiment Conduction Prep:
     ☐ Finalize  procedures  and  materials
       ✔ Develop  stimulus  material @done (20-02-12 23:36)
       ✔ Complete  pre-investigation  manipulation  checks @done (20-02-12 23:36)
-      ☐ Pilot  test  procedures @started(20-02-11 10:25)
+      ✔ Pilot  test  procedures @started(20-02-11 10:25) @done (20-02-13 18:37) @lasted(2 days, 8:12)
+      ✔ enlarge instructions, arrows, and fixation. @done (20-02-13 22:11)
     ☐ Arrange  settings  and  equipment
       ✔ Obtain  location  for  study @done (20-02-12 23:36)
       ☐ Schedule  location  for  study
@@ -11,9 +12,7 @@ Experiment Conduction Prep:
       ☐ Write  and  post  rules  for  equipment  use
       ☐ Obtain  a place to securely store data files (eg. consent forms)
       ☐ Secure  computer  and  software  for  data  analysis (look into encryption)
-      ☐ Put command line dev tools on dad's mac
-
-
+      ✔ Put command line dev tools on dad's mac @done (20-02-13 22:10)
       ☐ Develop  system  for  scheduling   participants,  rooms, equipment,  and  so  forth.
     ☐ Arrange  for  participant  recruitment
       ☐ Finalize  participant  recruitment  arrangements
@@ -34,7 +33,7 @@ Experiment Conduction Prep:
       ☐ Identify  probable  problems  early 
     ☐ Enter  the  data
       ☐ Write  up  system  for  coding  data  into  computer
-      ☐ Create  codebook/log
+      ☐ Create  codebook/log @started
         for unusual things during testing, decisions i make, informal observations, etc.
       ☐ Develop  a  data  verification  plan
       ☐ Verify  data  entry after EVERY session
@@ -50,22 +49,28 @@ Experiment Conduction Prep:
         ☐ Label  variables  and  printouts 
         Calculate  effect  sizes,  power,  and  confidence  intervals?
 Code/Exp Observations:
-  ☐ pilot num 1 was in 30s and female. 
-    No problems.
-    group A
-  ☐ pilot num 2 was about 31 years and female. 
-    slow starting but figured out how to respond by trial 10. 
-    group B
-  ☐ pilot num 3 was my dad (66 yrs i think). 
-    He took forever to read the instructions and had a really hard time figuring out the right letters to press. 
-    Group C.
-  ☐ pilot num 4 was 20 yrs and male.  
-    He figured out how to do the task right away; hesitating only on the first 2 trials. 
-    Group A.
-  ☐ pilot num 5 was in 50s and female. 
-    Had to tell her to what the fixation was b/c she started out pressing the keys based on the flanker arrows and not the target arrow. Suggested that I make the instruction letters larger and the arrows larger. 
-    took 2 min 40 seconds from instructions to finish
-    group B
+  ☐ rectify problems from pilots
+      ✔ pilot num 1 was in 30s and female. @done (20-02-13 18:40)
+        No problems.
+        group A
+      ✔ pilot num 2 was about 31 years and female. @done (20-02-13 18:40)
+        slow starting but figured out how to respond by trial 10. 
+        group B
+      ✔ pilot num 3 was my dad (66 yrs i think). @done (20-02-13 18:40)
+        He took forever to read the instructions and had a really hard time figuring out the right letters to press. 
+        Group C.
+      ✔ pilot num 4 was 20 yrs and male. @done (20-02-13 18:40)  
+        He figured out how to do the task right away; hesitating only on the first 2 trials. 
+        Group A.
+      ✔ pilot num 5 was in 50s and female. @done (20-02-13 18:40)
+        Had to tell her to what the fixation was b/c she started out pressing the keys based on the flanker arrows and not the target arrow. Suggested that I make the instruction letters larger and the arrows larger. 
+        took 2 min 40 seconds from instructions to finish
+        group B
+        ✔ pilot num 6 was 26 and male. @done (20-02-13 18:41)
+        suggested that the arrows and fixation should be little bit larger.
+        took 2 min 20 secs from instructions to finish
+        group C
+    ✔ monitor on comp 2 was scaled. Fixed it to match comp 1 which fixed the small size of the instructions and stimuli. @done (20-02-13 22:14)
 
 
 

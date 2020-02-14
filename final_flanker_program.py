@@ -114,7 +114,8 @@ widthPix = 720
 heightPix = 540
 # widthPix = 2560
 # heightPix = 1600
-mon = monitors.Monitor('test', width=53.1, distance=60.)
+# mon = monitors.Monitor('test', width=53.1, distance=60.)
+mon = monitors.Monitor('testMonitor')
 mon.setSizePix((widthPix, heightPix))
 win = visual.Window(
     monitor=mon,
