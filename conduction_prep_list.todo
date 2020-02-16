@@ -1,11 +1,11 @@
 Experiment Conduction Prep:
   Tasks:
-    ☐ Finalize  procedures  and  materials
+    ✔ Finalize  procedures  and  materials @done (20-02-15 19:38)
       ✔ Develop  stimulus  material @done (20-02-12 23:36)
       ✔ Complete  pre-investigation  manipulation  checks @done (20-02-12 23:36)
       ✔ Pilot  test  procedures @started(20-02-11 10:25) @done (20-02-13 18:37) @lasted(2 days, 8:12)
       ✔ enlarge instructions, arrows, and fixation. @done (20-02-13 22:11)
-    ☐ Arrange  settings  and  equipment
+    ☐ Arrange  settings  and  equipment @due( 20.02.20)
       ✔ Obtain  location  for  study @done (20-02-12 23:36)
       ☐ Schedule  location  for  study
       ✔ Obtain  equipment  for  study @done (20-02-12 23:36)
@@ -14,15 +14,15 @@ Experiment Conduction Prep:
       ☐ Secure  computer  and  software  for  data  analysis (look into encryption)
       ✔ Put command line dev tools on dad's mac @done (20-02-13 22:10)
       ☐ Develop  system  for  scheduling   participants,  rooms, equipment,  and  so  forth.
-    ☐ Arrange  for  participant  recruitment
+    ☐ Arrange  for  participant  recruitment @due( 20.02.18 15:00)
       ☐ Finalize  participant  recruitment  arrangements
       ✔ Make  up  participant  recruitment  forms @done (20-02-12 23:37)
       ☐ Initiate  participant  recruitment
-    ☐ Plan  for  the  unexpected 
+    ☐ Plan  for  the  unexpected @due( 20.02.20)
       ☐ Participants
       ☐ Personnel
       ☐ Equipment 
-    ☐ Arrange  forms  and  tracking  procedures
+    ☐ Arrange  forms  and  tracking  procedures @due( 20.02.20)
       ☐ Duplicate  consent forms
       ☐ Duplicate  other  forms
       ☐ Develop  system  for  keeping  track  of  participants
@@ -34,7 +34,7 @@ Experiment Conduction Prep:
       ☐ Identify  probable  problems  early 
     ☐ Enter  the  data
       ☐ Write  up  system  for  coding  data  into  computer
-      ☐ Create  codebook/log @started
+      ☐ Create  codebook/log @high @started 
         for unusual things during testing, decisions i make, informal observations, etc.
       ☐ Develop  a  data  verification  plan
       ☐ Verify  data  entry after EVERY session
@@ -43,14 +43,14 @@ Experiment Conduction Prep:
     ☐ Analyze  the  data
     ☐ Review  your  analysis  plan
       ☐ Conduct  preliminary  analyses
-      ☐ Examine  missing  data  and  determine  how  to  deal  with  them @high
-        too-slow responses enters as 'empty' cell.  
+      ✔ Examine  missing  data  and  determine  how  to  deal  with  them @high @done (20-02-15 19:36)
+        only kb.keys returns '' and the kb.rt and kb.corr return 0.  
       ☐ Conduct  hypothesis-testing  analyses
       ☐ Conduct  exploratory  analyses
         ☐ Label  variables  and  printouts 
         Calculate  effect  sizes,  power,  and  confidence  intervals?
 Code/Exp Observations:
-  ☐ rectify problems from pilots
+  ✔ rectify problems from pilots @done (20-02-15 19:37)
       ✔ pilot num 1 was in 30s and female. @done (20-02-13 18:40)
         No problems.
         group A

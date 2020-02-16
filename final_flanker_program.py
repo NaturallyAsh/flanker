@@ -435,6 +435,7 @@ for thisBlock in blocks:
                         if "escape" == theseKeys:
                             endExpNow = True
                         resp.keys = theseKeys.name 
+                        print(f'resp.key: {resp.keys}')
                         resp.rt = theseKeys.rt
                         print(f'resp.rt: {resp.rt}')
 
@@ -448,6 +449,7 @@ for thisBlock in blocks:
                             print(f"{resp.corr}: incorrect")
                             print(f"key: {resp.keys}")
 
+                        # condition to check if element is in List of ['',[],None]
                         if resp.keys in ['', [], None]:
                             resp.corr = None
 
@@ -476,12 +478,20 @@ for thisBlock in blocks:
                 for flanker in flanker_stimuli:
                     flanker.setAutoDraw(False)
             
-            trials.addData('kb.keys', resp.keys)
-            trials.addData('kb.corr', resp.corr)
-            corr_list.append(resp.corr)
-            if resp.keys != None:
+            if resp.keys in ['', [], None]:
+                resp.keys = ''
+                trials.addData('kb.keys', resp.keys)
+                trials.addData('kb.corr', resp.corr)
+            else:
+                trials.addData('kb.keys', resp.keys)
+                trials.addData('kb.corr', resp.corr)
+                corr_list.append(resp.corr)
+            if resp.keys != None and resp.keys != '':
                 trials.addData('kb.rt', resp.rt)
                 block_RT_list.append(resp.rt)
+            else:
+                resp.rt = 0
+                trials.addData('kb.rt', resp.rt)
             thisExp.nextEntry()
 
 
