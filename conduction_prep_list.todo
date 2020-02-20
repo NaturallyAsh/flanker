@@ -5,46 +5,48 @@ Experiment Conduction Prep:
       ✔ Complete  pre-investigation  manipulation  checks @done (20-02-12 23:36)
       ✔ Pilot  test  procedures @started(20-02-11 10:25) @done (20-02-13 18:37) @lasted(2 days, 8:12)
       ✔ enlarge instructions, arrows, and fixation. @done (20-02-13 22:11)
+      ☐ 
     ☐ Arrange  settings  and  equipment @due( 20.02.20)
       ✔ Obtain  location  for  study @done (20-02-12 23:36)
-      ☐ Schedule  location  for  study
+      ✔ Schedule  location  for  study @done (20-02-17 20:54)
       ✔ Obtain  equipment  for  study @done (20-02-12 23:36)
       ☐ Write  and  post  rules  for  equipment  use
-      ☐ Obtain  a place to securely store data files (eg. consent forms)
-      ☐ Secure  computer  and  software  for  data  analysis (look into encryption) @started
+      ✔ Obtain  a place to securely store data files (eg. consent forms) @done (20-02-19 22:45)
+        my house lock box
+      ✔ Secure  computer  and  software  for  data  analysis (look into encryption) @started @done (20-02-18 12:22)
       ✔ Put command line dev tools on dad's mac @done (20-02-13 22:10)
-      ☐ Develop  system  for  scheduling   participants,  rooms, equipment,  and  so  forth.
-    ☐ Arrange  for  participant  recruitment @due( 20.02.20)
-      ☐ Finalize  participant  recruitment  arrangements
+      ✔ Develop  system  for  scheduling   participants,  rooms, equipment,  and  so  forth. @done (20-02-19 22:47)
+    ☐ Arrange  for  participant  recruitment @due( 20.02.25)
+        hopefully someone will turn in my missing sign-up sheets
+      ✔ Finalize  participant  recruitment  arrangements @done (20-02-19 22:36)
       ✔ Make  up  participant  recruitment  forms @done (20-02-12 23:37)
-      ☐ Initiate  participant  recruitment
+      ✔ Initiate  participant  recruitment @done (20-02-19 22:35)
     ☐ Plan  for  the  unexpected @due( 20.02.20)
       ☐ Participants
       ☐ Personnel
       ☐ Equipment 
-    ☐ Arrange  forms  and  tracking  procedures @due( 20.02.20)
-      ☐ Duplicate  consent forms
-      ☐ Duplicate  other  forms 
-      ☐ Develop  system  for  keeping  track  of  participants
-      ☐ Arrange  filing  system  for  raw  data  and  participant  information 
+    ✔ Arrange  forms  and  tracking  procedures @due( 20.02.20) @done (20-02-19 22:46)
+      ✔ Consent forms @done (20-02-19 22:45)
+      ✔ Develop  system  for  keeping  track  of  participants @done (20-02-19 22:45)
+      ✔ Arrange  filing  system  for  raw  data  and  participant  information @done (20-02-18 12:23)
     ☐ Recruit  and  train  assistants  
         ensure Dr. Dunaway knows how to run the program
     ☐ Collect  the  data
       ☐ Schedule  regular  meetings  with  Dr. Dunaway
       ☐ Identify  probable  problems  early 
     ☐ Enter  the  data
-      ☐ Write  up  system  for  coding  data  into  computer
-      ☐ Create  Log @high @started 
+      ☐ Write  up  system  for  coding  data  into  computer @started
+      ☐ Create  Log @started 
         for unusual things during testing, decisions I make, informal observations, etc.
       ☐ Develop  a  data  verification  plan
-      ☐ Verify  data  entry after EVERY session
+      ☐ Verify  data  entry after EVERY session @high
       ☐ Look  for  unusual  values  and  verify  them
       ☐ Check  accuracy  of  transformation  programs
     ☐ Analyze  the  data
     ☐ Review  your  analysis  plan
       ☐ Conduct  preliminary  analyses
-      ✔ Examine  missing  data  and  determine  how  to  deal  with  them @high @done (20-02-15 19:36)
-        only kb.keys returns '' and the kb.rt and kb.corr return 0.  
+      ✔ Examine  missing  data  and  determine  how  to  deal  with  them @high @started @done (20-02-19 22:34) 
+        ✔ change kb.keys and kb.rt to NaN for all conditions. @started @done (20-02-19 22:34)
       ☐ Conduct  hypothesis-testing  analyses
       ☐ Conduct  exploratory  analyses
         ☐ Label  variables  and  printouts 

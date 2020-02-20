@@ -1,4 +1,4 @@
-# Current flanker build as of 2/12/20
+# Current flanker build as of 2/19/20
 
 # CREATE A COMMENTED SUMMARY OVERVIEW (significations of groups
 # variable meanings, block meanings, etc.)
@@ -116,10 +116,10 @@ heightPix = 540
 # heightPix = 1600
 # mon = monitors.Monitor('test', width=53.1, distance=60.)
 mon = monitors.Monitor('testMonitor')
-mon.setSizePix((widthPix, heightPix))
+# mon.setSizePix((widthPix, heightPix))
 win = visual.Window(
     monitor=mon,
-    size=(widthPix, heightPix),
+    # size=(widthPix, heightPix),
     colorSpace='rgb',
     color = '#000000',
     fullscr=True,
@@ -450,8 +450,8 @@ for thisBlock in blocks:
                             print(f"key: {resp.keys}")
 
                         # condition to check if element is in List of ['',[],None]
-                        if resp.keys in ['', [], None]:
-                            resp.corr = None
+                        # if resp.keys in ['', [], None]:
+                        #     resp.corr = None
 
                         continueTrial = False
 
@@ -479,18 +479,18 @@ for thisBlock in blocks:
                     flanker.setAutoDraw(False)
             
             if resp.keys in ['', [], None]:
-                resp.keys = ''
+                resp.keys = 'NaN'
                 trials.addData('kb.keys', resp.keys)
                 trials.addData('kb.corr', resp.corr)
             else:
                 trials.addData('kb.keys', resp.keys)
                 trials.addData('kb.corr', resp.corr)
                 corr_list.append(resp.corr)
-            if resp.keys != None and resp.keys != '':
+            if resp.keys != None and resp.keys != 'NaN':
                 trials.addData('kb.rt', resp.rt)
                 block_RT_list.append(resp.rt)
             else:
-                resp.rt = 0
+                resp.rt = 'NaN'
                 trials.addData('kb.rt', resp.rt)
             thisExp.nextEntry()
 
@@ -596,8 +596,8 @@ for thisBlock in blocks:
                             print(f"{resp.corr}: incorrect")
                             print(f"key: {resp.keys}")
 
-                        if resp.keys in ['', [], None]:
-                            resp.corr = None
+                        # if resp.keys in ['', [], None]:
+                        #     resp.corr = None
 
                         continueTrial = False
 
@@ -623,12 +623,27 @@ for thisBlock in blocks:
                 for flanker in flanker_stimuli:
                     flanker.setAutoDraw(False)
             
-            trials.addData('kb.keys', resp.keys)
-            trials.addData('kb.corr', resp.corr)
-            corr_list.append(resp.corr)
-            if resp.keys != None:
+            # trials.addData('kb.keys', resp.keys)
+            # trials.addData('kb.corr', resp.corr)
+            # corr_list.append(resp.corr)
+            # if resp.keys != None:
+            #     trials.addData('kb.rt', resp.rt)
+            #     block_RT_list.append(resp.rt)
+
+            if resp.keys in ['', [], None]:
+                resp.keys = 'NaN'
+                trials.addData('kb.keys', resp.keys)
+                trials.addData('kb.corr', resp.corr)
+            else:
+                trials.addData('kb.keys', resp.keys)
+                trials.addData('kb.corr', resp.corr)
+                corr_list.append(resp.corr)
+            if resp.keys != None and resp.keys != 'NaN':
                 trials.addData('kb.rt', resp.rt)
                 block_RT_list.append(resp.rt)
+            else:
+                resp.rt = 'NaN'
+                trials.addData('kb.rt', resp.rt)
         
             feedbackTimer.reset()
             # ---------- PREPARING FEEDBACK ----------- #
@@ -703,6 +718,7 @@ for thisBlock in blocks:
             trialClock.reset()  # clock
             frameN = -1
             continueTrial = True
+            tooSlowFlag = False
             resp = keyboard.Keyboard()
 
             # update w/ new params every repeat
@@ -759,6 +775,7 @@ for thisBlock in blocks:
                     for flanker in flanker_stimuli:
                         flanker.setAutoDraw(False)
                     tooSlowStim.setAutoDraw(True)
+                    tooSlowFlag = True
 
                 if t >= 5.0:
                     tooSlowStim.setAutoDraw(False)
@@ -788,8 +805,8 @@ for thisBlock in blocks:
                             print(f"{resp.corr}: incorrect")
                             print(f"key: {resp.keys}")
 
-                        if resp.keys in ['', [], None]:
-                            resp.corr = None
+                        # if resp.keys in ['', [], None]:
+                        #     resp.corr = None
 
                         continueTrial = False
 
@@ -815,12 +832,27 @@ for thisBlock in blocks:
                 for flanker in flanker_stimuli:
                     flanker.setAutoDraw(False)
             
-            trials.addData('kb.keys', resp.keys)
-            trials.addData('kb.corr', resp.corr)
-            corr_list.append(resp.corr)
-            if resp.keys != None:
+            # trials.addData('kb.keys', resp.keys)
+            # trials.addData('kb.corr', resp.corr)
+            # corr_list.append(resp.corr)
+            # if resp.keys != None:
+            #     trials.addData('kb.rt', resp.rt)
+            #     block_RT_list.append(resp.rt)
+
+            if resp.keys in ['', [], None]:
+                resp.keys = 'NaN'
+                trials.addData('kb.keys', resp.keys)
+                trials.addData('kb.corr', resp.corr)
+            else:
+                trials.addData('kb.keys', resp.keys)
+                trials.addData('kb.corr', resp.corr)
+                corr_list.append(resp.corr)
+            if resp.keys != None and resp.keys != 'NaN':
                 trials.addData('kb.rt', resp.rt)
                 block_RT_list.append(resp.rt)
+            else:
+                resp.rt = 'NaN'
+                trials.addData('kb.rt', resp.rt)
                 
             feedbackTimer.reset()
 
@@ -831,8 +863,12 @@ for thisBlock in blocks:
             continueTrial = True
             feedbackTimer.add(1)
             print(f'resp corr: {resp.corr}')
-            if resp.corr:
+            print(f'too slow flag: {tooSlowFlag}')
+            # flag prevents "good job" from showing after "too slow"
+            if resp.corr or tooSlowFlag == False:
                 msg = "Good job!"
+            else:
+                msg = ''
 
             feedbackText.setText(msg)
 
