@@ -51,7 +51,7 @@ Experiment Conduction Prep:
       ☐ Conduct  exploratory  analyses
         ☐ Label  variables  and  printouts 
         Calculate  effect  sizes,  power,  and  confidence  intervals?
-Code/Exp Observations:
+  Code/Exp Observations:
   ✔ rectify problems from pilots @done (20-02-15 19:37)
       ✔ pilot num 1 was in 30s and female. @done (20-02-13 18:40)
         No problems.
@@ -74,7 +74,12 @@ Code/Exp Observations:
         took 2 min 20 secs from instructions to finish
         group C
     ✔ monitor on comp 2 was scaled. Fixed it to match comp 1 which fixed the small size of the instructions and stimuli. @done (20-02-13 22:14)
-
-
-
-
+  Per Session Checklist:
+    ☐ Inform participants not to touch comps until instructed to    
+    ☐ have them sign in on compensation sheet
+    ☐ pass out consent forms for them to read, initial each page, then sign
+    ☐ collect forms and verify signatures
+    ☐ i will fill in the first dialog box (SubId and Cond capital letter [eg. A, B, C]) then press enter.
+      cross off corresponding Id and conds on sheet
+    ☐ have participant type in age and gender using CAPITAL LETTER (eg. F for female or M for male)
+    ☐ upon completion, verify data was saved on comps
