@@ -344,7 +344,7 @@ for thisBlock in blocks:
 
     # --------------- LAUNCHING GROUP A: NO FB ---------------- #
 
-    if fixedExpInfo['group'] == 'A' or 'a':
+    if fixedExpInfo['group'] == 'A':
         print('launching group A')
 
         for thisTrial in trials:
@@ -497,7 +497,7 @@ for thisBlock in blocks:
 
     # --------------- LAUNCHING GROUP B: FB ON CORR RESP ---------------- #
 
-    if fixedExpInfo['group'] == 'B' or 'b':
+    if fixedExpInfo['group'] == 'B':
         print('launching group B')
 
         for thisTrial in trials:
@@ -703,7 +703,7 @@ for thisBlock in blocks:
 
     # --------------- LAUNCHING GROUP C: FB EVERY TIME ---------------- #
 
-    if fixedExpInfo['group'] == 'C' or 'c':
+    if fixedExpInfo['group'] == 'C':
         print('launching group C')
 
         for thisTrial in trials:
