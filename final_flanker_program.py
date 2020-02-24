@@ -47,7 +47,7 @@ arrowNames = ['Left', 'Right']
 arrowChars = ["\u2190","\u2192"]
 expName = 'Flanker Task'
 msg = ''
-instructions = "Focus on the fixation cross sign in the middle of the screen at the start of each trial.\n\
+instructions = "Focus on the fixation cross (+) sign in the middle of the screen at the start of each trial.\n\
                 \nWhen the fixation cross disapears and the arrow appears, press the key that matches the arrow direction. \n\
                 \n Press on z if the arrow points to the left.\n\
                 \n Press on m if the arrow points to the right.\n\
