@@ -360,6 +360,7 @@ for thisBlock in blocks:
             frameN = -1
             continueTrial = True
             resp = keyboard.Keyboard()
+            no_response_flag = False
 
             # update w/ new params every repeat
             # using conds from xls files (so magical!)
@@ -414,6 +415,7 @@ for thisBlock in blocks:
                     resp.clearEvents(eventType='keyboard')
 
                 if t >= 5.0:
+                    no_response_flag = True
                     target_arrow.setAutoDraw(False)
                     for flanker in flanker_stimuli:
                         flanker.setAutoDraw(False)
@@ -423,15 +425,13 @@ for thisBlock in blocks:
                     tooSlowStim.setAutoDraw(False)
                     continueTrial = False
 
-
                 f = 0
                 feedbackClock.reset()
                 trialTimer.reset()
 
-                # resp.status = STARTED
-                # # clearing key presses may fix negative rts
-                # resp.clearEvents()
-                if resp.status == STARTED:
+                # adding no_response_flag makes sure keypresses and rts
+                # won't be recorded after too-slow appears
+                if resp.status == STARTED and no_response_flag != True:
                     theseKeys = resp.getKeys(keyList=respKeys, waitRelease=False)
                     if len(theseKeys):
                         theseKeys = theseKeys[0]
@@ -457,6 +457,7 @@ for thisBlock in blocks:
                         #     resp.corr = None
 
                         continueTrial = False
+
 
                 if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
                     core.quit()
@@ -516,6 +517,7 @@ for thisBlock in blocks:
             frameN = -1
             continueTrial = True
             resp = keyboard.Keyboard()
+            no_response_flag = False
 
             # update w/ new params every repeat
             # using conds from xls files (so magical!)
@@ -567,6 +569,7 @@ for thisBlock in blocks:
                     resp.clearEvents(eventType='keyboard')
 
                 if t >= 4.0:
+                    no_response_flag = True
                     target_arrow.setAutoDraw(False)
                     for flanker in flanker_stimuli:
                         flanker.setAutoDraw(False)
@@ -580,10 +583,9 @@ for thisBlock in blocks:
                 feedbackClock.reset()
                 trialTimer.reset()
 
-                # resp.status = STARTED
-                # # clearing keyboard presses may help w/ negative rt
-                # resp.clearEvents()
-                if resp.status == STARTED:
+                # adding no_response_flag makes sure keypresses and rts
+                # won't be recorded after too-slow appears
+                if resp.status == STARTED and no_response_flag != True:
                     theseKeys = resp.getKeys(keyList=respKeys, waitRelease=False)
                     if len(theseKeys):
                         theseKeys = theseKeys[0]
@@ -725,6 +727,7 @@ for thisBlock in blocks:
             frameN = -1
             continueTrial = True
             tooSlowFlag = False
+            no_response_flag = False
             resp = keyboard.Keyboard()
 
             # update w/ new params every repeat
@@ -777,6 +780,7 @@ for thisBlock in blocks:
                     resp.clearEvents(eventType='keyboard')
 
                 if t >= 4.0:
+                    no_response_flag = True
                     target_arrow.setAutoDraw(False)
                     for flanker in flanker_stimuli:
                         flanker.setAutoDraw(False)
@@ -792,10 +796,9 @@ for thisBlock in blocks:
                 feedbackClock.reset()
                 trialTimer.reset()
 
-                # resp.status = STARTED
-                # # clearing key presses may fix negative rts
-                # resp.clearEvents()
-                if resp.status == STARTED:
+                # adding no_response_flag makes sure keypresses and rts
+                # won't be recorded after too-slow appears
+                if resp.status == STARTED and no_response_flag != True:
                     theseKeys = resp.getKeys(keyList=respKeys, waitRelease=False)
                     if len(theseKeys):
                         theseKeys = theseKeys[0]
