@@ -428,6 +428,9 @@ for thisBlock in blocks:
                 feedbackClock.reset()
                 trialTimer.reset()
 
+                resp.status = STARTED
+                # clearing key presses may fix negative rts
+                resp.clearEvents()
                 if resp.status == STARTED:
                     theseKeys = resp.getKeys(keyList=respKeys, waitRelease=False)
                     if len(theseKeys):
@@ -577,6 +580,9 @@ for thisBlock in blocks:
                 feedbackClock.reset()
                 trialTimer.reset()
 
+                resp.status = STARTED
+                # clearing keyboard presses may help w/ negative rt
+                resp.clearEvents()
                 if resp.status == STARTED:
                     theseKeys = resp.getKeys(keyList=respKeys, waitRelease=False)
                     if len(theseKeys):
@@ -786,6 +792,9 @@ for thisBlock in blocks:
                 feedbackClock.reset()
                 trialTimer.reset()
 
+                resp.status = STARTED
+                # clearing key presses may fix negative rts
+                resp.clearEvents()
                 if resp.status == STARTED:
                     theseKeys = resp.getKeys(keyList=respKeys, waitRelease=False)
                     if len(theseKeys):
