@@ -28,6 +28,7 @@
 # B could be motivated to be more accurate
 
 import psychopy 
+import pdb
 from psychopy.hardware import keyboard
 from psychopy import core, visual, gui, data, event, monitors, logging 
 from psychopy.constants import (NOT_STARTED, STARTED, FINISHED, STOPPED)
@@ -122,7 +123,7 @@ win = visual.Window(
     # size=(widthPix, heightPix),
     colorSpace='rgb',
     color = '#000000',
-    fullscr=True,
+    fullscr=False,
     allowGUI=False, #switch to true to add to exp window
     units='deg')
 
@@ -216,6 +217,8 @@ pauseTimer = core.CountdownTimer()
 getReadyTimer = core.CountdownTimer()
 feedbackTimer = core.CountdownTimer()
 
+# pdb.set_trace()
+# breakpoint()
 
 t = 0
 instructClock.reset()
