@@ -112,4 +112,112 @@ Notes:
     C Sub 1682X - 3/2 - comp1
     C Sub 07AC0 - 3/2 - comp1
 
-    28 total minus 15 = only 13 good subject data
+    28 total minus 15 = only 13 good subject dat
+Analysis Plan:
+  Design:
+    - mean = mu, standard deviation = sigma
+    - DV: reaction time
+    - IV: feedback w/ 3 levels- (1)no fb, (2) contingent fb, (3) non-contingent fb
+      - my one-way anova factor is the "type of feedback"; this factor has 3 levels 
+    - Hypothesis: group B > RTs due to motivation from non-monetary incentive.
+    visualization:
+      -bar plot for comparing categories (e.g., means of A,B, and C)
+  preliminary analysis:
+    examine properties of my measurement (e.g., reliability, validity)
+    check for possible confounding variables
+    test assumptions of the stats I plan to use for testing my hypothesis
+    ☐ deal w/ missing data
+    ✔ identify possible outliers (e.g., really high/low RTs) @done (20-05-05 00:26)
+        in reference to the test_one_way_ANOVA.ipynb file
+          I dropped NaN rows
+          I dropped rt's < 200 ms and rt's > 1000 ms
+      - "In our field, the most frequent way of analyzing reaction time data is to use cut- offs that are the same across conditions and that eliminate a small percentage of responses (not a fixed percentage)" - Ratcliff, 1993).
+      - RT less than 100ms and greater than 1s excluded (Diedrichsen et al., 2000)
+      - removed RTs < 250ms and RTs > 2s (Levin & Tzelgov, 2016)
+    ☐ transform categorical data (congruent/incongruent) to numerical data
+  true analysis:
+    ☐ RT analyses
+      - only use RTs from correct responses; exclude incorrect response trials (Frober & Dreisbach, 2016; Libera & Chelazzi, 2006; Diedriccsen et al., 2000)
+    ☐ Accuracy analysis
+      - AKA MEASURING ERROR RATES
+        - "For analysis of error rates, the data were filtered the same way as for RT analysis, except that errors on the current trial were included (only wrong key presses were defined as errors; too-slow trials were still excluded from analysis)" - (Schuch, Zweerings, Hirsch, & Koch, 2017).
+    ☐ Virtually every flanker/stroop article mentions speed-accuracy trade-off.  I need to look into this more.
+    ☐ The standard error is calculated by dividing the standard deviation by the square root of number of measurements that make up the mean (often represented by N). In this case, 5 measurements were made (N = 5) so the standard deviation is divided by the square root of 5.
+Reporting examples:
+  - We could report the results of one-way ANOVA as follows...
+
+    A one-way ANOVA was performed to evaluate if the plant growth was different for the 3 different treatment groups: ctr (n = 10), trt1 (n = 10) and trt2 (n = 10).
+
+    Data is presented as mean +/- standard deviation. Plant growth was statistically significantly different between different treatment groups, F(2, 27) = 4.85, p = 0.016, generalized eta squared = 0.26.
+
+    Plant growth decreased in trt1 group (4.66 +/- 0.79) compared to ctr group (5.03 +/- 0.58). It increased in trt2 group (5.53 +/- 0.44) compared to trt1 and ctr group.
+
+    Tukey post-hoc analyses revealed that the increase from trt1 to trt2 (0.87, 95% CI (0.17 to 1.56)) was statistically significant (p = 0.012), but no other group differences were statistically significant.
+
+Poster Presentation:
+  Notes:
+    - OMG!! The flanker task is a Choice Reaction Task!
+
+    - Original PP intro 
+      - Previous research suggest that positive feedback can improve performance on a task.  More specifically, studies found that monetary incentives led to increased attentional effort and task performance.  
+      - However, to our knowledge, little attention has been paid to the intrinsic value of non-monetary incentives and its motivating potential on task completion. 
+      - This present study aimed to investigate the effect of non-monetary feedback (i.e., praise) on performance during an attentional task.  
+      - For this study, three groups of participants performed a modified version of the Erikson flanker task and assigned to one of three groups: control (no feedback) group, feedback contingent on the correct response performance contingent group, and feedback after every response performance non-contingent group.  
+      - We hypothesized that the contingent feedback group would have faster response times due to increase motivation from non-monetary feedback.  Our research concluded that there was no significant effect of type of feedback on response times.
+
+    - UPDATED INTRO
+      - often times people are expected to perform adequately in learning and work environments without the inclusion of monetary incentives.  Yet, most literature that investigate motivational influences on performance have only focused on extrinsic factors such as money (citation). Intrinsic incentives could provide a productivity boost when monetary incentives are perceived as insufficient.   Some studies found task performance to decrease after the removal of monetary incentives (citation), suggesting that more research should be done looking into the use of intrinsic incentives as a more effective motivator for sustained performance. Thus, the goal of our study 
+
+    - FUTURE STUDIES
+      - Teachers are not allowed to reward students with pay and many of times, new employees do not receive extra compensation when performing day-to-day tasks.  And if employees do happen to receive an incentive, task performance does not necessarily improve.
+
+    - RANDOM INCOMPLETE INFO
+      - Investigations of the influence of rewards on motivation have often compared a monetary reward group to a no reward group.  Yet, few studies have compared 
+      - implications or significance of study?? (new thoughts)
+        - in an ever advancing technological era, learning is shifting more and more to computerized (or something similar) environments.  These learning environments could prove challenging for the learner to maintain attention, stay interested, and motivated (??)
+
+    - “Flanker task is simple enough that it does not require the allocation of much attentional resources.” – (1)p.145; Blais, C.
+    - Conflict-monitoring hypothesis (1)p.146
+
+    - (1) p. 15, 31, 187 seems interesting.
+    
+    - (1)Effortless Attention: A New Perspective 
+
+    - the hypercorrection effect (Butterfield & Metcalfe, 2006)
+      - "This effect shows that when using a general knowledge test with corrective feedback, high confidence errors are more likely to be corrected after feedback than low confidence errors. Butterfield and Metcalfe (2006) demonstrated that this effect is best explained by enhanced attentional capture due to the surprising or unexpected feedback." - Van der Borght et al., 2016 Improved memory for error feedback article
+
+    - Outcome measures typically cover latency (response speed), correct responses, and errors of commission and omission.
+      - normative data should be based off of control (no fb) group.
+
+    - "In the flanker task, trials faster than 100 ms or trials exceeding the response time as well as subsequent trials were discarded." - Van der Borght et al., 2016 Improved memory for error feedback article
+
+    - RTs 2 sd's from mean were excluded from analysis - Libera & Chelazzi, Visual Selective Attention.
+
+    - "Analogously, when no other feedback is available, the correct selection of a target, and concurrent filtering of dis- tractors, may initiate a form of self-reward." - Libera & Chelazzi, Visual Selective Attention.
+
+    - Most studies that investigate performance contingent reward effects use fast and accurate responses as a performance criterion for reward achievement. 
+
+    - We hypothesize that factors that increase the intrinsic motivation of a task – such as framing a task as helping others – may succeed in improving output quality where extrinsic motivators such as increased pay do not.
+     - our findings could add to already known knowledge about feedback to learning environments and which type is more appropriate given contexts.
+
+    - https://www.slideshare.net/jamickle/psychology-poster-presentation-the-effect-of-trait-order-on-the-likeablity-rating-of-individuals (poster example w/ nice notes towards the bottom of the page)
+
+    - none of the groups received negative feedback or were informed about errors.
+
+    - we predicted that w/o positive info (or any info) about performance, the no fb group would see no reason to respond faster or cause disengagment from the task (possible decreased response times in the later trials?).
+
+    - we predicted that non-continent group would produce more errors
+
+    - JAMOVI BOOK
+      - normality of sample w/ RTs (pg. 272)
+      - pg. 495
+Meeting w/ Sis:
+  ☐ create raw csv of the 24 trials (for sis, only include columns Group, Accuracy, and Reaction_time)
+
+  ☐ create csv w/ excluded trials (due to incorrect response or too fast/too-slow responses [for sis, only include columns Group, Accuracy, and Reaction_time])
+  csv for cleaned/exluded data @done(20-05-22 10:12)
+  ✔ csv for raw data @done(20-05-22 10:12)
+
+  see if I can create mean results per subject (e.g., )
+ 
+    
