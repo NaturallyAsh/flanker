@@ -1,115 +1,0 @@
-Experiment Conduction Prep:
-  Tasks:
-    ✔ Finalize  procedures  and  materials @done (20-02-15 19:38)
-      ✔ Develop  stimulus  material @done (20-02-12 23:36)
-      ✔ Complete  pre-investigation  manipulation  checks @done (20-02-12 23:36)
-      ✔ Pilot  test  procedures @started(20-02-11 10:25) @done (20-02-13 18:37) @lasted(2 days, 8:12)
-      ✔ enlarge instructions, arrows, and fixation. @done (20-02-13 22:11)
-      ☐ 
-    ✔ Arrange  settings  and  equipment @due( 20.02.20) @done (20-02-25 15:15)
-      ✔ Obtain  location  for  study @done (20-02-12 23:36)
-      ✔ Schedule  location  for  study @done (20-02-17 20:54)
-      ✔ Obtain  equipment  for  study @done (20-02-12 23:36)
-      ✔ Write  and  post  rules  for  equipment  use @done (20-02-25 15:16)
-      ✔ Obtain  a place to securely store data files (eg. consent forms) @done (20-02-19 22:45)
-        testing room lock cabinet
-      ✔ Secure  computer  and  software  for  data  analysis (look into encryption) @started @done (20-02-18 12:22)
-      ✔ Put command line dev tools on dad's mac @done (20-02-13 22:10)
-      ✔ Develop  system  for  scheduling   participants,  rooms, equipment,  and  so  forth. @done (20-02-19 22:47)
-    ✔ Arrange  for  participant  recruitment @due( 20.02.25) @done (20-02-25 12:33)
-        hopefully someone will turn in my missing sign-up sheets (no one did; passed out new sheets)
-      ✔ Finalize  participant  recruitment  arrangements @done (20-02-19 22:36)
-      ✔ Make  up  participant  recruitment  forms @done (20-02-12 23:37)
-      ✔ Initiate  participant  recruitment @done (20-02-19 22:35)
-    ✔ Plan  for  the  unexpected @due( 20.02.20) @done (20-02-25 12:33)
-      ☐ Participants
-        recruit from other classes
-      ☐ Personnel
-        Dr. D will assist if necessary
-      ☐ Equipment 
-        if one comp stops working, maybe I can borrow
-    ✔ Arrange  forms  and  tracking  procedures @due( 20.02.20) @done (20-02-19 22:46)
-      ✔ Consent forms @done (20-02-19 22:45)
-      ✔ Develop  system  for  keeping  track  of  participants @done (20-02-19 22:45)
-      ✔ Arrange  filing  system  for  raw  data  and  participant  information @done (20-02-18 12:23)
-    ☐ Recruit  and  train  assistants  
-        ensure Dr. Dunaway knows how to run the program
-    ☐ Collect  the  data
-      ☐ Schedule  regular  meetings  with  Dr. Dunaway
-      ☐ Identify  probable  problems  early 
-    ☐ Enter  the  data
-      ✔ Write  up  system  for  coding  data  into  computer @started @done (20-02-25 12:32)
-      ✔ Create  Log @started @done (20-02-25 12:32)
-        for unusual things during testing, decisions I make, informal observations, etc.
-      ☐ Develop  a  data  verification  plan
-      ☐ Verify  data  entry after EVERY session @high
-      ☐ Look  for  unusual  values  and  verify  them
-      ☐ Check  accuracy  of  transformation  programs
-    ☐ Analyze  the  data
-    ☐ Review  your  analysis  plan
-      ☐ Conduct  preliminary  analyses
-      ✔ Examine  missing  data  and  determine  how  to  deal  with  them @high @started @done (20-02-19 22:34) 
-        ✔ change kb.keys and kb.rt to NaN for all conditions. @started @done (20-02-19 22:34)
-      ✔ fix too-slow on group C.  Shows up on thank you slide. @high @done (20-02-25 12:32)
-        although, too-slow showed up randomly on comp2 2/3 thru the trial
-        will look into it soon; too busy at school currently
-        crap...too-slow showed up around trial 7 on comp1.  Definitely an error in the code.
-      ☐ Conduct  hypothesis-testing  analyses
-      ☐ Conduct  exploratory  analyses
-        ☐ Label  variables  and  printouts 
-        Calculate  effect  sizes,  power,  and  confidence  intervals?
-Code/Exp Observations:
-  ✔ rectify problems from pilots @done (20-02-15 19:37)
-      ✔ pilot num 1 was in 30s and female. @done (20-02-13 18:40)
-        No problems.
-        group A
-      ✔ pilot num 2 was about 31 years and female. @done (20-02-13 18:40)
-        slow starting but figured out how to respond by trial 10. 
-        group B
-      ✔ pilot num 3 was my dad (66 yrs i think). @done (20-02-13 18:40)
-        He took forever to read the instructions and had a really hard time figuring out the right letters to press. 
-        Group C.
-      ✔ pilot num 4 was 20 yrs and male. @done (20-02-13 18:40)  
-        He figured out how to do the task right away; hesitating only on the first 2 trials. 
-        Group A.
-      ✔ pilot num 5 was in 50s and female. @done (20-02-13 18:40)
-        Had to tell her to what the fixation was b/c she started out pressing the keys based on the flanker arrows and not the target arrow. Suggested that I make the instruction letters larger and the arrows larger. 
-        took 2 min 40 seconds from instructions to finish
-        group B
-        ✔ pilot num 6 was 26 and male. @done (20-02-13 18:41)
-        suggested that the arrows and fixation should be little bit larger.
-        took 2 min 20 secs from instructions to finish
-        group C
-    ✔ monitor on comp 2 was scaled. Fixed it to match comp 1 which fixed the small size of the instructions and stimuli. @done (20-02-13 22:14)
-  Per Session Checklist:
-    ☐ Inform participants not to touch comps until instructed to    
-    ☐ have them sign in on compensation sheet
-    ☐ pass out consent forms for them to read, initial each page, then sign
-    ☐ collect forms and verify signatures
-    ☐ i will fill in the first dialog box (SubId and Cond capital letter [eg. A, B, C]) then press enter.
-      cross off corresponding Id and conds on sheet
-    ☐ have participant type in age and gender using CAPITAL LETTER (eg. F for female or M for male)
-    ☐ upon completion, verify data was saved on comps
-    ☐ create a talking script
-    ☐ close door during experiment
-    ☐ put up 'experiment in progress' sign
-Notes:
-  Subjects w/ negative RTs of RTs < 0.09 (see if i can check the earliest possible response time)
-    A Sub 0FEB9 - 2/24 - comp2
-    A Sub 0950A - 2/25 - comp2
-    A Sub 136EE - 3/2 - comp2
-    C Sub 184B2 - 2/27 - comp2
-    C Sub 07D30 - 3/3 - comp2
-
-    A Sub 1595A - 2/24 - comp1
-    A Sub 1B2CD - 2/25 - comp1
-    A Sub 0485F - 2/26 - comp1
-    A Sub 0D88C - 2/26 - comp1
-    A Sub 192D1 - 2/27 - comp1
-    B Sub 160A9 - 2/25 - comp1
-    B Sub 041A8 - 3/2 - comp1 (has no rts or keypresses)
-    C Sub 063F4 - 2/27 - comp1
-    C Sub 1682X - 3/2 - comp1
-    C Sub 07AC0 - 3/2 - comp1
-
-    28 total minus 15 = only 13 good subject data
