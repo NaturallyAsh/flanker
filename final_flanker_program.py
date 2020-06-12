@@ -363,6 +363,7 @@ for thisBlock in blocks:
             frameN = -1
             continueTrial = True
             resp = keyboard.Keyboard()
+            resp.clearEvents(eventType='keyboard')
             no_response_flag = False
 
             # update w/ new params every repeat
@@ -520,6 +521,7 @@ for thisBlock in blocks:
             frameN = -1
             continueTrial = True
             resp = keyboard.Keyboard()
+            resp.clearEvents(eventType='keyboard')
             no_response_flag = False
 
             # update w/ new params every repeat
@@ -732,6 +734,7 @@ for thisBlock in blocks:
             tooSlowFlag = False
             no_response_flag = False
             resp = keyboard.Keyboard()
+            resp.clearEvents(eventType='keyboard')
 
             # update w/ new params every repeat
             # using conds from xls files (so magical!)
